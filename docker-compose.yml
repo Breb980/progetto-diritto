@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000" # <porta_host>:<porta_container>
+    volumes:
+      - ./backend:/app
+    environment: #da cambiare il nome del db?
+      - DATABASE_URL=postgres://postgres:password@db:5432/vote_db
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000" # <porta_host>:<porta_container>
+    volumes:
+      - ./frontend:/app
+    environment: #da cambiare il nome del db?
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:14
+    enviroment:
+      POSTGRESS_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vode_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  volumes: 
+    db-data
