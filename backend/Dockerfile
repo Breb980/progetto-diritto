@@ -11,7 +11,7 @@ RUN npm install
 # copy the frontend in docker image
 COPY . .
 
-# expose port 3000
+# expose port 5000
 EXPOSE 5000
 
 # start command (npm run start)
