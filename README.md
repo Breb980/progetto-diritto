@@ -28,4 +28,4 @@ You can build and run simultaneously:
 ## Ports
 - **Frontend:** http://localhost:3000
 - **Backend:** http://localhost:5000
-- **Database:** localhost:5432
+- **Database:** PostgreSQL on port 5432
