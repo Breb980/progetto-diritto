@@ -1,0 +1,50 @@
+
+/* main container*/
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between; /* spaziatura nel menu, TODO */
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+/* sidebar + body */
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #2d3748;
+  color: white;
+  padding: 16px;
+  /*overflow-y: auto;*/
+  overflow: hidden;
+  transition: width 0.3s ease; /* animazion */
+}
+
+.sidebar.closed {
+  width: 0;
+  padding: 0;
+}
+
+/* main content */
+.content {
+  flex: 1;
+  background-color: #f7fafc;
+  padding: 24px;
+  overflow-y: auto;
+}

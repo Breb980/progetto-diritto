@@ -2,15 +2,8 @@ import axios from "axios";
 //useState: memorize local state in the page
 import { useState } from "react";
 
-// export default function Home() {
-//   return (
-//     <div style={{ textAlign: "center", marginTop: "50px" }}>
-//       <h1>Finalmente funziona 🎉</h1>
-//       <p>Sono felice, il frontend funziona!</p>
-//     </div>
-//   );
-// }
-
+import Button from "@/components/ui/button";
+import Layout from "@/components/layouts/layout"
 
 //GETTER from backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
@@ -41,6 +34,7 @@ export default function Home() {
   };
   // if the try went well, RETURN the users list 
   return (
+    <Layout>
     <div style={{ padding: "20px" }}>
       <h1>Utenti dal Database</h1>
       <button onClick={fetchUsers}>Carica utenti</button>
@@ -51,6 +45,11 @@ export default function Home() {
           </li>
         ))}
       </ul>
+      <h1>Benvenuto nella piattaforma di voto</h1>
+        <Button label="Invia" onClick={() => alert("Hai votato!")}/>
+        <Button label="Annulla" variant="secondary" size="small"/>
+        <Button label="Profilo" variant="outline"/>
     </div>
+     </Layout>
   );
 }
