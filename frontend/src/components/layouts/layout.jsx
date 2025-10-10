@@ -1,26 +1,25 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router"; 
 import styles from "@/styles/layout.module.css"; 
-import buttons from "@/styles/button.module.css";
+import Button from "@/components/ui/button";
+//import buttons from "@/styles/button.module.css";
 
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const router = useRouter();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
   <div className={styles.layoutContainer}>
+   {/*<button onClick={toggleSidebar} className={`${buttons.btn} ${buttons["secondary"]} ${buttons["medium"]}`}>
+      {sidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
+    </button>*/}
   {/* Header */}
   <header className={styles.header}>
-    <button onClick={toggleSidebar} className={`${buttons.btn} ${buttons["secondary"]} ${buttons["medium"]}`}>
-      {sidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
-    </button>
-    <button onClick={""} className={`${buttons.btn} ${buttons["primary"]} ${buttons["medium"]}`}>
-      {"Vota"}
-    </button>
-    <button onClick={""} className={`${buttons.btn} ${buttons["primary"]} ${buttons["medium"]}`}>
-      {"Accedi"}
-    </button>
+    <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} onClick={toggleSidebar} variant="secondary"/>
+    <Button label="Accedi" onClick={() => router.push("/login")} variant="primary"/>
     <div className={styles.profile}>Profile</div>
   </header>
 

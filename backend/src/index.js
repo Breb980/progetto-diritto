@@ -51,3 +51,24 @@ app.get("/users", async (req, res) => {
     res.status(500).json({ error: "Database connection failed" });
   }
 });
+
+/* endpoint login */
+app.post("/login", async (req, res) => {
+  const { cf, psw} = req.body;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users WHERE cf = $1 AND psw = $2",
+      [cf, psw]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ success: true });
+    } else {
+      res.status(401).json({ error: "Credenziali non valide" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server" });
+  }
+});

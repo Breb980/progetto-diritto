@@ -40,8 +40,8 @@ export default function Home() {
       <button onClick={fetchUsers}>Carica utenti</button>
       <ul>
         {users.map((u) => (
-          <li key={u.id}>
-            {u.id} - {u.name}
+          <li key={u.cf}>
+            {u.cf} - {u.name}
           </li>
         ))}
       </ul>

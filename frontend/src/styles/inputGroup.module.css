@@ -1,0 +1,35 @@
+.group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.left,
+.right {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  /*background: #f0f0f0;*/
+  color: #555;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  padding: 10px 12px;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.input:focus {
+  background: #fafafa;
+}
+
+.group:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
