@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router"; 
 import styles from "@/styles/layout.module.css"; 
 import Button from "@/components/ui/button";
-//import buttons from "@/styles/button.module.css";
+import { useAuth } from "@/utils/authContext";
 
 
 export default function Layout({ children }) {
@@ -10,6 +10,8 @@ export default function Layout({ children }) {
   const router = useRouter();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const { isAuthenticated, user, logout} = useAuth();
 
   return (
   <div className={styles.layoutContainer}>
@@ -19,8 +21,40 @@ export default function Layout({ children }) {
   {/* Header */}
   <header className={styles.header}>
     <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} onClick={toggleSidebar} variant="secondary"/>
-    <Button label="Accedi" onClick={() => router.push("/login")} variant="primary"/>
-    <div className={styles.profile}>Profile</div>
+    
+    <div>
+      {isAuthenticated ? (
+        <Button label="Vota" variant="primary" onClick={""}/>
+  ) : (
+    <p>Accedi per poter votare</p>
+  )}
+</div>
+
+    <div className={styles.profile}>
+  {!isAuthenticated ? (
+    // Caso: utente non loggato
+    <Button
+      label="Accedi"
+      onClick={() => router.push("/login")}
+      variant="primary"
+    />
+  ) : user ? (
+    // Caso: utente autenticato e dati caricati
+    <div>
+      {`${user.name} ${user.surname}`}
+      <Button
+        label="Disconnettiti"
+        onClick={logout}
+        variant="primary"
+        style={{ marginLeft: "10px" }}
+      />
+    </div>
+  ) : (
+    // Caso: autenticato ma dati non ancora caricati
+    <p>Caricamento...</p>
+  )}
+</div>
+
   </header>
 
   {/* sidebar + body */}

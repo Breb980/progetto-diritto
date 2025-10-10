@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Button from "@/components/ui/button";
 import { InputGroup, InputLeft, Input, InputRight } from "@/components/ui/inputGroup";
 import { handleLoginSubmit } from "@/utils/submits";
+import { useAuth } from "@/utils/authContext";
 
 
 export default function LoginForm() {
@@ -18,6 +19,9 @@ export default function LoginForm() {
 
     /* getter for result*/
     const [result, setResult] = useState(null);
+
+    //const { isAuthenticated, setIsAuthenticated } = useAuth();
+    const { login } = useAuth();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,8 +32,10 @@ export default function LoginForm() {
 
         //if the auth its ok
         if (result.success) {
+            login(result.user);
             // rederict to home
             setTimeout(() => { router.push("/"); }, 1000);
+            //setIsAuthenticated(true); 
         }
     };
 

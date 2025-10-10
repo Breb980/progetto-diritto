@@ -9,7 +9,7 @@ export const handleLoginSubmit = async (cf, psw) => {
         const data = res.data;
 
         if (data.success) {
-            return { success: true, message: "✅ Login effettuato con successo!" };
+            return { success: true, user: data.user, message: "✅ Login effettuato con successo!" };
         }
     } catch (err) {
         console.error("Errore di rete:", err);

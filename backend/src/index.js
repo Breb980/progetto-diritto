@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true , user: result.rows[0]});
     } else {
       res.status(401).json({ error: "Credenziali non valide" });
     }
