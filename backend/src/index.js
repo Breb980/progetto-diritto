@@ -54,7 +54,7 @@ app.get("/users", async (req, res) => {
 
 /* endpoint login */
 app.post("/login", async (req, res) => {
-  const { cf, psw} = req.body;
+  const {cf, psw} = req.body;
 
   try {
     const result = await pool.query(
@@ -70,5 +70,49 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Errore server" });
+  }
+});
+
+
+/* endpoint signin */
+app.post("/signin", async (req, res) => {
+  const {cf, name, surname, psw} = req.body;
+
+  try {
+    //check if users exists
+    const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
+    if (check.rows.length > 0) {
+      return res.status(400).json({ error: "Utente già registrato" });
+    }
+    if (cf.length == 0 || name.length == 0  || surname.length == 0  || psw.length == 0 ) {
+      return res.status(400).json({ error: "Tutti i campi devono essere riempiti" });
+    }
+
+    if (cf.length != 16) {
+      return res.status(400).json({ error: "Codice fiscale non valido" });
+    }
+
+    if (psw.length < 6 && psw.length > 0) {
+      return res.status(400).json({ error: "Password troppo debole" });
+    }
+    
+
+
+    //insert the new user
+    const result = await pool.query(
+      "INSERT INTO users (cf, name, surname, psw) VALUES ($1, $2, $3, $4) RETURNING *",
+      [cf, name, surname, psw]
+    );
+
+    // return
+    res.status(201).json({
+      success: true,
+      message: "Registrazione completata con successo!",
+      user: result.rows[0],
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante la registrazione" });
   }
 });

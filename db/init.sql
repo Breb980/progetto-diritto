@@ -19,3 +19,4 @@ SELECT 'init.sql eseguito correttamente' AS message;
 --UPDATE users
 --SET vote = 'Candidato A'
 --WHERE cf = 'RSSMRA80A01H501U';
+--VALUES ('MSTGTN90A01H501A', 'Giantino', 'Mastrazzi', 'giantino123');
