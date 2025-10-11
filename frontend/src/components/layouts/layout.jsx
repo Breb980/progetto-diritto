@@ -41,7 +41,8 @@ export default function Layout({ children }) {
   ) : user ? (
     // Caso: utente autenticato e dati caricati
     <div>
-      {`${user.name} ${user.surname}`}
+      <span style={{ fontWeight: "bold", color: "#000000ff", fontSize: "1rem" }}>
+      {`${user.name} ${user.surname}`} </span>
       <Button
         label="Disconnettiti"
         onClick={logout}
