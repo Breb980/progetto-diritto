@@ -46,7 +46,7 @@ export default function Home() {
         ))}
       </ul>
       <h1>Benvenuto nella piattaforma di voto</h1>
-        <Button label="Invia" onClick={() => alert("Hai votato!")}/>
+        <Button label="Invia" click={() => alert("Hai votato!")}/>
         <Button label="Annulla" variant="secondary" size="small"/>
         <Button label="Profilo" variant="outline"/>
     </div>

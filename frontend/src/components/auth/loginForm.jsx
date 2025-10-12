@@ -61,7 +61,7 @@ export default function LoginForm() {
             <br />
             <div style={{ display: "flex", gap: "12px"}}>
                 <Button label="Accedi" variant="outline" type="submit"/>
-                <Button label="Annulla" onClick={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
+                <Button label="Annulla" click={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
             </div>
             <br />
             <p> <a href="/signin">Non sei iscritto? iscriviti subito</a> </p>

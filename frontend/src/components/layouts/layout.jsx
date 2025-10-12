@@ -20,11 +20,11 @@ export default function Layout({ children }) {
     </button>*/}
   {/* Header */}
   <header className={styles.header}>
-    <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} onClick={toggleSidebar} variant="secondary"/>
+    <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
     
     <div>
       {isAuthenticated ? (
-        <Button label="Vota" variant="primary" onClick={""}/>
+        <Button label="Vota" variant="primary" click={""}/>
   ) : (
     <p>Accedi per poter votare</p>
   )}
@@ -35,7 +35,7 @@ export default function Layout({ children }) {
     // Caso: utente non loggato
     <Button
       label="Accedi"
-      onClick={() => router.push("/login")}
+      click={() => router.push("/login")}
       variant="primary"
     />
   ) : user ? (
@@ -45,7 +45,7 @@ export default function Layout({ children }) {
       {`${user.name} ${user.surname}`} </span>
       <Button
         label="Disconnettiti"
-        onClick={logout}
+        click={logout}
         variant="primary"
         style={{ marginLeft: "10px" }}
       />

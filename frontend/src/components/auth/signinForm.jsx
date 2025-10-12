@@ -65,7 +65,7 @@ export default function LoginForm() {
             <br />
             <div style={{ display: "flex", gap: "12px"}}>
                 <Button label="Iscriviti" variant="outline" type="submit"/>
-                <Button label="Annulla" onClick={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
+                <Button label="Annulla" click={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
             </div>
             {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", marginTop: "1rem", }}>{message}</p>}
         </form>
