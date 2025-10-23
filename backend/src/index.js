@@ -119,3 +119,41 @@ app.post("/signin", async (req, res) => {
     res.status(500).json({ error: "Errore server durante la registrazione" });
   }
 });
+
+/* endpoint vote */
+app.post("/vote", async (req, res) => {
+  const {cf, choice} = req.body;
+
+  try {
+    // check if users exists
+    const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
+
+    // the user must exists
+    if (check.rows.length <= 0) {
+      return res.status(400).json({ error: "Utente non registrato" });
+    }
+
+    // check for vote
+    const alreadyVoted = await pool.query("SELECT * FROM users WHERE cf = $1 AND vote IS NOT NULL", [cf]);
+    
+    // the user can vote one time
+    if (alreadyVoted.rows.length > 0) {
+      return res.status(400).json({ error: "Hai già votato!" });
+    }
+
+    await pool.query(
+      "UPDATE users SET vote = $1 WHERE cf = $2 RETURNING *",
+      [choice, cf]
+    );
+  
+    // return
+    res.status(201).json({
+      success: true,
+      message: "Votazione completata con successo!",
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante la votazione" });
+  }
+});

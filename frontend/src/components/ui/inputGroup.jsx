@@ -24,3 +24,27 @@ export function InputRight({ children }) {
 export function Input({ ...props }) {
   return <input className={styles.input} {...props} />;
 }
+
+
+/**
+ * Select (singola o multipla)
+ * @param {Object} props
+ * @param {Array<{value: string, label: string}>} props.options - menu options
+ * @param {boolean} [props.multiple=false] - if true, enable multiple selection
+ * @returns {JSX.Element}
+*/
+export function InputSelect({options = [], multiple = false, ...props }) {
+  return (
+    <select
+      className={`${styles.input} ${styles.select}`}
+      multiple={multiple}
+      {...props}
+    >
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  );
+}

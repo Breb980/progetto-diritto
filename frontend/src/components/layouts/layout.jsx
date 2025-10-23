@@ -30,7 +30,7 @@ export default function Layout({ children }) {
     
     <div>
       {isAuthenticated ? (
-        <Button label="Vota" variant="primary" click={""}/>
+        <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
   ) : (
     <p>Accedi per poter votare</p>
   )}

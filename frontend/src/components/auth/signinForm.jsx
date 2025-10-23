@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router"; 
 import Button from "@/components/ui/button";
-import { InputGroup, InputLeft, Input } from "@/components/ui/inputGroup";
+import { InputGroup, InputLeft, InputRight, Input } from "@/components/ui/inputGroup";
 import { handleSigninSubmit } from "@/utils/submits";
 import { useAuth } from "@/utils/authContext";
 
@@ -10,7 +10,7 @@ import { useAuth } from "@/utils/authContext";
 export default function LoginForm() {
 
     const router = useRouter();
-    //const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     /* input states */
     const [cf, setCf] = useState("");
@@ -60,7 +60,14 @@ export default function LoginForm() {
             <br />
             <InputGroup>
                 <InputLeft>🔒</InputLeft>
-                <Input type="password" placeholder="Password" value={psw} onChange={(e) => setPassword(e.target.value)} />
+                <Input type={showPassword ? "text" : "password"} placeholder="Password" value={psw} onChange={(e) => setPassword(e.target.value)} />
+                    <InputRight>
+                        <button type="button" 
+                            style={{ padding: "4px 8px", cursor: "pointer", borderRadius: "6px", backgroundColor: "#6c757d", marginLeft: "-10px",
+                                marginTop: "1px"
+                            }} 
+                            onClick={() => setShowPassword((prev) => !prev)}>👁️</button>
+                    </InputRight>
             </InputGroup>
             <br />
             <div style={{ display: "flex", gap: "12px"}}>
