@@ -20,6 +20,12 @@ app.use(cors());
 // app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
+const options = [
+  { value: "it", label: "Italia" },
+  { value: "fr", label: "Francia" },
+  { value: "de", label: "Germania" },
+];
+
 // route test
 app.get('/', (req, res) => {
   res.send('Backend funzionante!');
@@ -141,6 +147,16 @@ app.post("/vote", async (req, res) => {
       return res.status(400).json({ error: "Hai già votato!" });
     }
 
+    // extracts from options only the value
+    const validValues = options.map(opt => opt.value);
+
+    ////console.log("Choice ricevuta:", choice);
+
+    // if choice isn't legit, throw error
+    if (!validValues.includes(choice)) {
+      return res.status(400).json({ error: "Opzione non valida" });
+    }
+
     await pool.query(
       "UPDATE users SET vote = $1 WHERE cf = $2 RETURNING *",
       [choice, cf]
@@ -155,5 +171,21 @@ app.post("/vote", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Errore server durante la votazione" });
+  }
+});
+
+/* endpoint options */
+app.get("/options", async (req, res) => {
+  try {
+
+    // return
+    res.status(201).json({
+      success: true,
+      options: options,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
   }
 });

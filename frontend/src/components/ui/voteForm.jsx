@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router"; 
 import Button from "@/components/ui/button";
 import { InputGroup, InputLeft, InputSelect } from "@/components/ui/inputGroup";
 import { handleVoteSubmit } from "@/utils/submits";
 import { useAuth } from "@/utils/authContext";
+import { handleGetOptions } from "@/utils/requests";
 
 export default function VoteForm() {
 
@@ -15,9 +16,24 @@ export default function VoteForm() {
 
     /* getter for result*/
     const [result, setResult] = useState(null);
-    
+
+    const [options, setOptions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // getter for options
+    useEffect(() => {
+        async function fetchOptions() {
+            const res = await handleGetOptions();
+            if (res.success) setOptions(res.options);
+            if (!res.success) console.error("opzioni non trovate");
+            setLoading(false);
+        }
+        fetchOptions();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Choice inviata al backend:", choice);
         const result = await handleVoteSubmit(user.cf, choice);
         console.log(result);
         setResult(result); //save the result
@@ -31,6 +47,8 @@ export default function VoteForm() {
         }
     };
 
+    if (loading) return <p>Caricamento opzioni...</p>;
+
     return (
         <form style={{ width: "300px", margin: "2rem auto" }} onSubmit={handleSubmit}>
             <h2>Votazione</h2>
@@ -38,12 +56,8 @@ export default function VoteForm() {
                 <InputLeft>@</InputLeft>
                 <InputSelect 
                     value={choice}
-                    options={[
-                        { value: "it", label: "Italia" },
-                        { value: "fr", label: "Francia" },
-                        { value: "de", label: "Germania" },
-                    ]}
-                    onChange={(e) => setChoice(e.target.value)}
+                    options={options}
+                    onChange={(e) => { console.log("Nuova scelta:", e.target.value); setChoice(e.target.value)}}
                 />
             </InputGroup>
             <br />
@@ -57,3 +71,8 @@ export default function VoteForm() {
        
     ); //<p> <a href="/candidati">Non sai chi votare? informati</a> </p>
 }
+// [
+//     { value: "it", label: "Italia" },
+//     { value: "fr", label: "Francia" },
+//     { value: "de", label: "Germania" },
+// ]

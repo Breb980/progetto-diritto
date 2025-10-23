@@ -33,13 +33,16 @@ export function Input({ ...props }) {
  * @param {boolean} [props.multiple=false] - if true, enable multiple selection
  * @returns {JSX.Element}
 */
-export function InputSelect({options = [], multiple = false, ...props }) {
+export function InputSelect({options = [], multiple = false, placeholder = "-- Seleziona un'opzione --", ...props }) {
   return (
     <select
       className={`${styles.input} ${styles.select}`}
       multiple={multiple}
       {...props}
     >
+      {/* Placeholder for single selection, disable: not selectable, hidden: placeholder hidden*/}
+      {!multiple && <option value="" disable hidden>{placeholder}</option>}
+
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
