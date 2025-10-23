@@ -2,6 +2,7 @@ const { Pool } = require('pg');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const { hashPassword, verifyPassword } = require('../src/auth/auth.js');
 
 const app = express();
 
@@ -58,11 +59,10 @@ app.post("/login", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT * FROM users WHERE cf = $1 AND psw = $2",
-      [cf, psw]
+      "SELECT * FROM users WHERE cf = $1",
+      [cf]
     );
-
-    if (result.rows.length > 0) {
+    if (result.rows.length > 0 && verifyPassword(psw, result.rows[0].psw)) {
       res.status(200).json({ success: true , user: result.rows[0]});
     } else {
       res.status(401).json({ error: "Credenziali non valide" });
@@ -81,6 +81,8 @@ app.post("/signin", async (req, res) => {
   try {
     //check if users exists
     const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
+
+    // several checks
     if (check.rows.length > 0) {
       return res.status(400).json({ error: "Utente già registrato" });
     }
@@ -96,12 +98,13 @@ app.post("/signin", async (req, res) => {
       return res.status(400).json({ error: "Password troppo debole" });
     }
     
+    // hash the psw
+    const hashedPsw = hashPassword(psw);
 
-
-    //insert the new user
+    // insert the new user
     const result = await pool.query(
       "INSERT INTO users (cf, name, surname, psw) VALUES ($1, $2, $3, $4) RETURNING *",
-      [cf, name, surname, psw]
+      [cf, name, surname, hashedPsw]
     );
 
     // return

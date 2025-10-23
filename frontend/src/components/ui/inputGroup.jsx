@@ -2,6 +2,13 @@
 import React from "react";
 import styles from "@/styles/inputGroup.module.css";
 
+/** 
+ * 
+ * @param {Object} props - All standard input props - only for Input
+ * @param {React.ReactNode} props.children - Components to be wrapped by this provider
+ * @returns {JSX.Element}
+ */
+
 export function InputGroup({ children }) {
   return <div className={styles.group}>{children}</div>;
 }

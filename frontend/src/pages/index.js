@@ -8,6 +8,7 @@ import Layout from "@/components/layouts/layout"
 //GETTER from backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
 
+// used for test
 export const getUsers = async () => {
   try {
     const res = await axios.get(`${API_URL}/users`);
@@ -18,6 +19,10 @@ export const getUsers = async () => {
   }
 };
 
+/** Homepage
+ *  
+ *  @returns {JSX.Element}
+*/
 export default function Home() {
   // users: state of users
   // setUsers: function for update the state 

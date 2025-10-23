@@ -1,8 +1,14 @@
-/* submit for login, 
-   return {success, message} from invoker */
+/* All submits are defined here */
 
 import api from "@/utils/api";
 
+/**
+ * Callback function for intermediate frontend and backend during a login - submit for login
+ *
+ * @param {string} cf - User CF 
+ * @param {string} psw - User password
+ * @returns {Object} - {Boolean: success, Object: user data only success is true, string: message}
+ * */
 export const handleLoginSubmit = async (cf, psw) => {
     try {
         const res = await api.post("/login", { cf, psw });
@@ -27,13 +33,22 @@ export const handleLoginSubmit = async (cf, psw) => {
 };
 
 /* submit for signin */
+/**
+ * Callback function for intermediate frontend and backend during a signin - submit for signin
+ *
+ * @param {string} cf - User CF 
+ * @param {string} name - User name 
+ * @param {string} surname - User surname
+ * @param {string} psw - User password
+ * @returns {Object} - {Boolean: success, Object: user data only success is true, string: message}
+ * */
 export const handleSigninSubmit = async (cf, name, surname, psw) => {
     try {
         const res = await api.post("/signin", { cf, name, surname, psw });
         const data = res.data;
 
         if (data.success) {
-            return { success: true, user: data.user, message: "✅ Iscrizione effettuata con successo!" };
+            return { success: true, user: data.user, message: "✅ Registrazione effettuata con successo!" };
         }
     } catch (err) {
         console.error("Errore di rete:", err);

@@ -3,7 +3,13 @@ import { createContext, useState, useContext, useEffect } from "react";
 // create the context
 const AuthContext = createContext();
 
-// Provider that wrap the app
+/**
+ * AuthProvider wraps the app with authentication context
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Components to be wrapped by this provider
+ * @returns {JSX.Element}
+ */
 export function AuthProvider({ children }) {
 
     //true if is authenticated
@@ -45,7 +51,10 @@ export function AuthProvider({ children }) {
     );
 }
 
-// Hook for use the context
+/** Hook for use the context
+ * 
+ * @returns {Object} The value provided by AuthContext.Provider
+*/
 export function useAuth() {
   return useContext(AuthContext);
 }

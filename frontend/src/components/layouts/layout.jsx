@@ -4,7 +4,13 @@ import styles from "@/styles/layout.module.css";
 import Button from "@/components/ui/button";
 import { useAuth } from "@/utils/authContext";
 
-
+/**
+ * Provider that create the layout structure
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Components to be wrapped by this provider
+ * @returns {JSX.Element}
+ * */
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
