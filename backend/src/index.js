@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.send('Backend funzionante!');
 });
 
-// endpoint of test DB
+// endpoint of test DB, TEST
 app.get("/test-db", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
@@ -47,7 +47,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend running on port ${PORT}`);
 });
 
-// endpoint users
+// endpoint users TEST da rimuovere
 app.get("/users", async (req, res) => {
   try {
     //const result = await pool.query("SELECT id, name FROM users");
@@ -159,7 +159,12 @@ app.post("/vote", async (req, res) => {
 
     await pool.query(
       "UPDATE users SET vote = $1 WHERE cf = $2 RETURNING *",
-      [choice, cf]
+      ["votato", cf]
+    );
+
+    await pool.query(
+      "INSERT INTO votes (choice) VALUES ($1)",
+      [choice]
     );
   
     // return
@@ -171,6 +176,51 @@ app.post("/vote", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Errore server durante la votazione" });
+  }
+});
+
+/* endpoint vote/stats */
+app.get("/vote/stats", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT choice , COUNT(*) AS count
+      FROM votes
+      WHERE choice IS NOT NULL
+      GROUP BY choice
+    `);
+
+    // convert "options" in a map
+    const labelMap = Object.fromEntries(options.map(opt => [opt.value, opt.label]));
+
+    // formatta i dati sostituendo choice con label
+    const formatted = result.rows.map(row => ({
+      choice: labelMap[row.choice] || row.choice,
+      count: Number(row.count)
+    }));
+
+
+    res.json({ success: true, results: formatted });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Errore server" });
+  }
+});
+
+/* endpoint vote/stats TEST da rimuovere */
+app.get("/vote/stat", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT choice , COUNT(*) AS count
+      FROM votes
+      WHERE choice IS NOT NULL
+      GROUP BY choice
+    `);
+    
+    console.log("test", result.rows);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Errore server" });
   }
 });
 

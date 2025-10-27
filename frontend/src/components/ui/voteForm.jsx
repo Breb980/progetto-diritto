@@ -35,7 +35,7 @@ export default function VoteForm() {
         e.preventDefault();
         console.log("Choice inviata al backend:", choice);
         const result = await handleVoteSubmit(user.cf, choice);
-        console.log(result);
+        ///console.log(result);
         setResult(result); //save the result
         setMessage(result.message);
 
@@ -71,8 +71,3 @@ export default function VoteForm() {
        
     ); //<p> <a href="/candidati">Non sai chi votare? informati</a> </p>
 }
-// [
-//     { value: "it", label: "Italia" },
-//     { value: "fr", label: "Francia" },
-//     { value: "de", label: "Germania" },
-// ]

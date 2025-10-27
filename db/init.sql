@@ -17,6 +17,15 @@ VALUES
 ('VRDLGI85B12H501T', 'Luigi', 'Verdi', 'password2', NULL),
 ('BNCLRA90C23H501Q', 'Laura', 'Bianchi', 'password3', NULL);
 
+INSERT INTO votes (choice)
+VALUES 
+('it'),
+('it'),
+('it'),
+('de'),
+('de'),
+('fr');
+
 -- Test output
 SELECT 'init.sql eseguito correttamente' AS message;
 

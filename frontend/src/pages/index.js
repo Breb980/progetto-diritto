@@ -1,57 +1,48 @@
 import axios from "axios";
 //useState: memorize local state in the page
-import { useState } from "react";
+import { useState, useEffect} from "react";
 
 import Button from "@/components/ui/button";
-import Layout from "@/components/layouts/layout"
+import Layout from "@/components/layouts/layout";
+import Chart from "@/components/ui/chart";
+
 
 //GETTER from backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
-
-// used for test
-export const getUsers = async () => {
-  try {
-    const res = await axios.get(`${API_URL}/users`);
-    return res.data;
-  } catch (err) {
-    console.error("Error fetching users:", err);
-    return [];
-  }
-};
 
 /** Homepage
  *  
  *  @returns {JSX.Element}
 */
 export default function Home() {
-  // users: state of users
-  // setUsers: function for update the state 
-  const [users, setUsers] = useState([]);
 
-  // CALL the backend
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get(API_URL + "/users");
-      setUsers(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+  const [chartData, setChartData] = useState({ labels: [], data: [] });
+  
+  const fetchData = async () => {
+      try {
+        const res = await axios.get(API_URL + "/vote/stats"); 
+
+        const labels = res.data.results.map(r => r.choice);
+        const data = res.data.results.map(r => r.count);
+        ///console.log("labels", labels);
+        ///console.log("data", data);
+        setChartData({ labels, data });
+      } catch (err) {
+        console.error("Errore caricamento dati:", err);
+      }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // if the try went well, RETURN the users list 
   return (
     <Layout>
     <div style={{ padding: "20px" }}>
-      <h1>Utenti dal Database</h1>
-      <button onClick={fetchUsers}>Carica utenti</button>
-      <ul>
-        {users.map((u) => (
-          <li key={u.cf}>
-            {u.cf} - {u.name}
-          </li>
-        ))}
-      </ul>
       <h1>Benvenuto nella piattaforma di voto</h1>
-        <Button label="Invia" click={() => alert("Hai votato!")}/>
+        <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" />
+        <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
         <Button label="Annulla" variant="secondary" size="small"/>
         <Button label="Profilo" variant="outline"/>
     </div>
