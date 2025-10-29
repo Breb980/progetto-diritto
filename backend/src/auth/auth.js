@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
  * @returns {string} - hash
  */
 function hashPassword(psw) {
-
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(psw, salt);
 }

@@ -11,11 +11,11 @@ CREATE TABLE IF NOT EXISTS votes (
 );
 
 --INSERT INTO users (name) VALUES ('Mario'), ('Paolo'), ('Luisa');
-INSERT INTO users (cf, name, surname, psw, vote)
-VALUES 
-('RSSMRA80A01H501U', 'Mario', 'Rossi', 'password1', NULL),
-('VRDLGI85B12H501T', 'Luigi', 'Verdi', 'password2', NULL),
-('BNCLRA90C23H501Q', 'Laura', 'Bianchi', 'password3', NULL);
+--INSERT INTO users (cf, name, surname, psw, vote)
+--VALUES 
+--('RSSMRA80A01H501U', 'Mario', 'Rossi', 'password1', NULL),
+--('VRDLGI85B12H501T', 'Luigi', 'Verdi', 'password2', NULL),
+--('BNCLRA90C23H501Q', 'Laura', 'Bianchi', 'password3', NULL);
 
 INSERT INTO votes (choice)
 VALUES 

@@ -47,18 +47,6 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend running on port ${PORT}`);
 });
 
-// endpoint users TEST da rimuovere
-app.get("/users", async (req, res) => {
-  try {
-    //const result = await pool.query("SELECT id, name FROM users");
-    const result = await pool.query("SELECT * FROM users");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB error:", err);
-    res.status(500).json({ error: "Database connection failed" });
-  }
-});
-
 /* endpoint login */
 app.post("/login", async (req, res) => {
   const {cf, psw} = req.body;
@@ -206,7 +194,38 @@ app.get("/vote/stats", async (req, res) => {
   }
 });
 
-/* endpoint vote/stats TEST da rimuovere */
+/* endpoint options */
+app.get("/options", async (req, res) => {
+  try {
+
+    // return
+    res.status(201).json({
+      success: true,
+      options: options,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
+  }
+});
+
+
+//----------- TESTS -----------
+
+// endpoint users
+app.get("/users", async (req, res) => {
+  try {
+    //const result = await pool.query("SELECT id, name FROM users");
+    const result = await pool.query("SELECT * FROM users");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB error:", err);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
+
+/* endpoint vote/stats */
 app.get("/vote/stat", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -221,21 +240,5 @@ app.get("/vote/stat", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: "Errore server" });
-  }
-});
-
-/* endpoint options */
-app.get("/options", async (req, res) => {
-  try {
-
-    // return
-    res.status(201).json({
-      success: true,
-      options: options,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
   }
 });

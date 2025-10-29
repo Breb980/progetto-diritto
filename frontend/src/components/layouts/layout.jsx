@@ -21,56 +21,56 @@ export default function Layout({ children }) {
   const { isAuthenticated, user, logout} = useAuth();
 
   return (
-  <div className={styles.layoutContainer}>
+    <div className={styles.layoutContainer}>
 
-  {/* Header */}
-  <header className={styles.header}>
-    <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
-    
-  <div>
-      {isAuthenticated ? (
-        <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
-  ) : (
-    <p>Accedi per poter votare</p>
-  )}
-  </div>
+      {/* Header */}
+      <header className={styles.header}>
+        <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
+      
+        <div>
+          {isAuthenticated ? (
+            <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
+          ) : (
+            <p>Accedi per poter votare</p>
+          )}
+        </div>
+        
+        <div> 
+          {!isAuthenticated ? (
+          // className={styles.profile} nel div? TODO
+          // Caso 1: utente non loggato
+            <Button
+              label="Accedi"
+              click={() => router.push("/login")}
+              variant="primary"
+            />
+          ) : user ? (
+            // Caso 2: utente autenticato e dati caricati
+            <div>
+              <span style={{ fontWeight: "bold", color: "#000000ff", fontSize: "1rem" }}>
+              {`${user.name} ${user.surname}`} </span>
+              <Button
+                label="Disconnettiti"
+                click={logout}
+                variant="primary"
+                style={{ marginLeft: "10px" }}
+              />
+            </div>
+          ) : (
+            // Caso 3: autenticato ma dati non ancora caricati
+            <p>Caricamento...</p>
+          )}
+        </div>
 
-    <div className={styles.profile}>
-  {!isAuthenticated ? (
-    // Caso: utente non loggato
-    <Button
-      label="Accedi"
-      click={() => router.push("/login")}
-      variant="primary"
-    />
-  ) : user ? (
-    // Caso: utente autenticato e dati caricati
-    <div>
-      <span style={{ fontWeight: "bold", color: "#000000ff", fontSize: "1rem" }}>
-      {`${user.name} ${user.surname}`} </span>
-      <Button
-        label="Disconnettiti"
-        click={logout}
-        variant="primary"
-        style={{ marginLeft: "10px" }}
-      />
+      </header>
+
+      {/* Sidebar + Body */}
+      <div className={styles.body}>
+        <Sidebar sidebarOpen={sidebarOpen} />
+        <main className={styles.content}>
+          {children}
+        </main>
+      </div>
     </div>
-  ) : (
-    // Caso: autenticato ma dati non ancora caricati
-    <p>Caricamento...</p>
-  )}
-</div>
-
-  </header>
-
-  {/* sidebar + body */}
-  <div className={styles.body}>
-    <Sidebar sidebarOpen={sidebarOpen} />
-    <main className={styles.content}>
-      {children}
-    </main>
-  </div>
-</div>
-
   );
 }
