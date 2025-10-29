@@ -1,0 +1,17 @@
+import styles from "@/styles/layout.module.css"; 
+
+export default function Sidebar({ sidebarOpen }) {
+  return (
+    <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
+      <div>
+        <h2>Grafici</h2>
+        <nav>
+          <a href="/chartBar">Barra</a>
+          <a href="/chartPie">Torta</a>
+          <a href="/">Altro</a>
+          <a style={{ background: "green" }} href="/">Torna alla Home</a>
+        </nav>
+      </div>
+    </aside>
+  );
+}

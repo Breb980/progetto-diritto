@@ -1,7 +1,6 @@
-//NON utilizzata
 import axios from "axios";
 //useState: memorize local state in the page
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import Button from "@/components/ui/button";
 import Layout from "@/components/layouts/layout";
@@ -11,11 +10,12 @@ import Chart from "@/components/ui/chart";
 //GETTER from backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
 
-/** Homepage
- *  
- *  @returns {JSX.Element}
-*/
-export default function PieHome() {
+/**
+ * generic page for visualize any type of chart
+ * @param {string} type - chart type (es. "bar", "pie", "line")
+ * @param {string} title - chart title
+ */
+export default function ChartPage({ type = "bar", title = "Statistiche voti" }) {
 
   const [chartData, setChartData] = useState({ labels: [], data: [] });
   
@@ -38,13 +38,14 @@ export default function PieHome() {
   }, []);
 
   // if the try went well, RETURN the users list 
-  return (
-    <Layout>
-        <div style={{ padding: "20px" }}>
-            <h1>Grafico a torta</h1>
-            <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" typology="pie" />
-            <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
-        </div>
-    </Layout>
-  );
+    return (
+      <Layout>
+          <div style={{ padding: "20px" }}>
+              <h1>{title}</h1>
+              <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" typology={type} />
+              <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
+          </div>
+      </Layout>
+    );
+
 }

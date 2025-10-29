@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styles from "@/styles/layout.module.css"; 
 import Button from "@/components/ui/button";
 import { useAuth } from "@/utils/authContext";
+import Sidebar from "@/components/ui/sidebar";
 
 /**
  * Provider that create the layout structure
@@ -21,17 +22,18 @@ export default function Layout({ children }) {
 
   return (
   <div className={styles.layoutContainer}>
+
   {/* Header */}
   <header className={styles.header}>
     <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
     
-    <div>
+  <div>
       {isAuthenticated ? (
         <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
   ) : (
     <p>Accedi per poter votare</p>
   )}
-</div>
+  </div>
 
     <div className={styles.profile}>
   {!isAuthenticated ? (
@@ -62,42 +64,8 @@ export default function Layout({ children }) {
   </header>
 
   {/* sidebar + body */}
-  {/*<style>{"\
-        .a{\
-          color:white;\
-          flex: 1;\
-          text-decoration: none;\
-          outline-color: transparent;\
-          text-align: center;\
-          line-height: 3;\
-          color: black;\
-        }\
-        a:link,\
-        a:visited,\
-        a:focus {\
-        background: palegoldenrod;\
-        color: black;\
-        }\
-        a:hover {\
-        background: orange;\
-        }\
-        a:active {\
-        background: darkred;\
-        color: white;\
-        }\
-      "}</style>*/}
   <div className={styles.body}>
-    <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
-      <div> <h2>Grafici</h2>
-      <nav>
-          <a href="/sideChartBar">Barra</a>
-          <a href="/sideChartPie">Torta</a>
-          <a href="/">Altro</a>
-          <a style={{background:"green"}} href="/">Torna alla Home</a>
-      </nav>
-      </div>
-    </aside>
-
+    <Sidebar sidebarOpen={sidebarOpen} />
     <main className={styles.content}>
       {children}
     </main>
