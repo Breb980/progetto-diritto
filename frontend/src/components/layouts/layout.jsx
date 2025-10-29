@@ -21,9 +21,6 @@ export default function Layout({ children }) {
 
   return (
   <div className={styles.layoutContainer}>
-   {/*<button onClick={toggleSidebar} className={`${buttons.btn} ${buttons["secondary"]} ${buttons["medium"]}`}>
-      {sidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
-    </button>*/}
   {/* Header */}
   <header className={styles.header}>
     <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
@@ -65,16 +62,40 @@ export default function Layout({ children }) {
   </header>
 
   {/* sidebar + body */}
+  {/*<style>{"\
+        .a{\
+          color:white;\
+          flex: 1;\
+          text-decoration: none;\
+          outline-color: transparent;\
+          text-align: center;\
+          line-height: 3;\
+          color: black;\
+        }\
+        a:link,\
+        a:visited,\
+        a:focus {\
+        background: palegoldenrod;\
+        color: black;\
+        }\
+        a:hover {\
+        background: orange;\
+        }\
+        a:active {\
+        background: darkred;\
+        color: white;\
+        }\
+      "}</style>*/}
   <div className={styles.body}>
     <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
-      <div className={styles.sidebarLogo}>Logo</div>
-      <nav className={styles.sidebarNav}>
-        <ul>
-          <li>Dashboard</li>
-          <li>Users</li>
-          <li>Settings</li>
-        </ul>
+      <div> <h2>Grafici</h2>
+      <nav>
+          <a href="/sideChartBar">Barra</a>
+          <a href="/sideChartPie">Torta</a>
+          <a href="/">Altro</a>
+          <a style={{background:"green"}} href="/">Torna alla Home</a>
       </nav>
+      </div>
     </aside>
 
     <main className={styles.content}>

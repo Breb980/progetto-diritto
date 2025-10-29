@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto"; //auto define for "new Chart..."
 
-export default function ChartDisplay({ labels = [], data = [], title = "Statistiche" }) {
+export default function ChartDisplay({ labels = [], data = [], title = "Statistiche", typology="bar" }) {
     const canvasRef = useRef(null);
     const chartInstance = useRef(null);
 
@@ -14,7 +14,7 @@ export default function ChartDisplay({ labels = [], data = [], title = "Statisti
         }
 
         chartInstance.current = new Chart(ctx, {
-        type: "bar",
+        type: typology,
         data: {
             labels,
             datasets: [
@@ -36,7 +36,7 @@ export default function ChartDisplay({ labels = [], data = [], title = "Statisti
         });
     // cleanup
         return () => chartInstance.current.destroy();
-    }, [labels, data, title]);
+    }, [labels, data, title, typology]);
 
     return (
         <div style={{ width: "600px", height: "400px", margin: "auto" }}>

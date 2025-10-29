@@ -62,3 +62,6 @@ export default function TestPage() {
       </div>
   )
 }
+/*<button onClick={toggleSidebar} className={`${buttons.btn} ${buttons["secondary"]} ${buttons["medium"]}`}>
+      {sidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
+    </button>*/

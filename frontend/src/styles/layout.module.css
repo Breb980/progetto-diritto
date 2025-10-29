@@ -30,6 +30,7 @@
   width: 250px;
   background-color: #2d3748;
   color: white;
+  text-align: center;
   padding: 16px;
   /*overflow-y: auto;*/
   overflow: hidden;
@@ -47,4 +48,31 @@
   background-color: #f7fafc;
   padding: 24px;
   overflow-y: auto;
+}
+
+.sidebar a {
+  display: block; /*for newline*/
+  flex: 1;
+  text-decoration: none;
+  outline-color: transparent;
+  line-height: 3;
+  color: black;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.sidebar a:link,
+.sidebar a:visited,
+.sidebar a:focus {
+  background: palegoldenrod;
+  color: black;
+}
+
+.sidebar a:hover {
+  background: orange;
+}
+
+.sidebar a:active {
+  background: darkred;
+  color: white;
 }
