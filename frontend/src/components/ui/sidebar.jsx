@@ -2,7 +2,7 @@ import styles from "@/styles/layout.module.css";
 
 export default function Sidebar({ sidebarOpen }) {
   return (
-    <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
+    <aside className={`${styles.sidebar} ${sidebarOpen === "open" ? styles.open : styles.closed}`}>
       <div>
         <h2>Grafici</h2>
         <nav>

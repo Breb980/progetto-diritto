@@ -53,7 +53,9 @@ export default function VoteForm() {
         <form style={{ width: "300px", margin: "2rem auto" }} onSubmit={handleSubmit}>
             <h2>Votazione</h2>
             <InputGroup>
-                <InputLeft>@</InputLeft>
+                <InputLeft>
+                    <img width="20" height="20" src="https://img.icons8.com/external-flat-icons-inmotus-design/67/external-box-vote-elections-flat-icons-inmotus-design-2.png" alt="external-box-vote-elections-flat-icons-inmotus-design-2"/>
+                </InputLeft>
                 <InputSelect 
                     value={choice}
                     options={options}
@@ -66,7 +68,12 @@ export default function VoteForm() {
                 <Button label="Annulla" click={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
             </div>
             <br />
-            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", marginTop: "1rem", }}>{message}</p>}
+            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red" }}>
+                {result.success 
+                ? <img width="22" height="22" src="https://img.icons8.com/color/48/checkmark--v1.png" alt="checkmark--v1"/>
+                : <img width="22" height="22" src="https://img.icons8.com/color/48/delete-sign--v1.png" alt="delete-sign--v1"/>
+                } 
+                {message}</p>}
         </form>
        
     ); //<p> <a href="/candidati">Non sai chi votare? informati</a> </p>

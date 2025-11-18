@@ -1,9 +1,9 @@
-/* All submits are defined here */
+/* All submits are defined here ❌ ✅*/
 
 import api from "@/utils/api";
 
 /**
- * Callback function for intermediate frontend and backend during a login - submit for login
+ * Callback function for intermediate frontend and backend during a login - submit for login 
  *
  * @param {string} cf - User CF 
  * @param {string} psw - User password
@@ -15,19 +15,19 @@ export const handleLoginSubmit = async (cf, psw) => {
         const data = res.data;
 
         if (data.success) {
-            return { success: true, user: data.user, message: "✅ Login effettuato con successo!" };
+            return { success: true, user: data.user, message: "Login effettuato con successo!" };
         }
     } catch (err) {
         console.error("Errore di rete:", err);
         if (err.response) { // capture errors HTTP from server (es. 401)
             return {
                 success: false,
-                message: `❌ ${err.response.data?.error || "Credenziali non valide"}`,
+                message: `${err.response.data?.error || "Credenziali non valide"}`,
             };
         } else if (err.request) { // sent request but no response from server
-            return { success: false, message: "❌ Nessuna risposta dal server" };
+            return { success: false, message: "Nessuna risposta dal server" };
         } else { // others errors (Axios configurations ecc.)
-            return { success: false, message: "❌ Errore di connessione al server" };
+            return { success: false, message: "Errore di connessione al server" };
         }
     }
 };
@@ -48,19 +48,19 @@ export const handleSigninSubmit = async (cf, name, surname, psw) => {
         const data = res.data;
 
         if (data.success) {
-            return { success: true, user: data.user, message: "✅ Registrazione effettuata con successo!" };
+            return { success: true, user: data.user, message: "Registrazione effettuata con successo!" };
         }
     } catch (err) {
         console.error("Errore di rete:", err);
         if (err.response) { // capture errors HTTP from server (es. 401)
             return {
                 success: false,
-                message: `❌ ${err.response.data?.error || "Dati inseriti non validi"}`,
+                message: `${err.response.data?.error || "Dati inseriti non validi"}`,
             };
         } else if (err.request) { // sent request but no response from server
-            return { success: false, message: "❌ Nessuna risposta dal server" };
+            return { success: false, message: "Nessuna risposta dal server" };
         } else { // others errors (Axios configurations ecc.)
-            return { success: false, message: "❌ Errore di connessione al server" };
+            return { success: false, message: "Errore di connessione al server" };
         }
     }
 };
@@ -72,19 +72,19 @@ export const handleVoteSubmit = async (cf, choice) => {
         const data = res.data;
 
         if (data.success) {
-            return { success: true, message: "✅ Voto effettuato con successo!" };
+            return { success: true, message: "Voto effettuato con successo!" };
         }
     } catch (err) {
         console.error("Errore di rete:", err);
         if (err.response) { // capture errors HTTP from server (es. 401)
             return {
                 success: false,
-                message: `❌ ${err.response.data?.error || "Dati inseriti non validi"}`,
+                message: `${err.response.data?.error || "Dati inseriti non validi"}`,
             };
         } else if (err.request) { // sent request but no response from server
-            return { success: false, message: "❌ Nessuna risposta dal server" };
+            return { success: false, message: "Nessuna risposta dal server" };
         } else { // others errors (Axios configurations ecc.)
-            return { success: false, message: "❌ Errore di connessione al server" };
+            return { success: false, message: "Errore di connessione al server" };
         }
     }
 };

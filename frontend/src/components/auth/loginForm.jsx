@@ -35,7 +35,7 @@ export default function LoginForm() {
             login(result.user);
             // rederict to home
             setTimeout(() => { router.push("/"); }, 1000);
-            //setIsAuthenticated(true); 
+            //setIsAuthenticated(true); 🔒 👁️
         }
     };
 
@@ -43,19 +43,22 @@ export default function LoginForm() {
         <form style={{ width: "300px", margin: "2rem auto" }} onSubmit={handleSubmit}>
             <h2>Login</h2>
             <InputGroup>
-                <InputLeft>@</InputLeft>
+                <InputLeft><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/identification-documents.png" alt="cf"/></InputLeft>
                 <Input type="text" placeholder="CF" value={cf} onChange={(e) => setCf(e.target.value)} />
             </InputGroup>
             <br />
             <InputGroup>
-                <InputLeft>🔒</InputLeft>
+                <InputLeft><img width="20" height="20" src="https://img.icons8.com/skeuomorphism/32/lock.png" alt="lock"/></InputLeft>
                 <Input type={showPassword ? "text" : "password"} placeholder="Password" value={psw} onChange={(e) => setPassword(e.target.value)} />
                 <InputRight>
                 <button type="button" 
-                    style={{ padding: "4px 8px", cursor: "pointer", borderRadius: "6px", backgroundColor: "#6c757d", marginLeft: "-10px",
-                        marginTop: "1px"
+                    style={{ padding: "8px 8.5px", cursor: "pointer", borderRadius: "6px", backgroundColor: "#ffffffff", marginLeft: "-10px",
+                        display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #ffffffff"  
                     }} 
-                    onClick={() => setShowPassword((prev) => !prev)}>👁️</button>
+                    onClick={() => setShowPassword((prev) => !prev)}>
+                        {showPassword ? <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/visible--v1.png" alt="visible--v1"/> 
+                        : <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/invisible--v1.png" alt="visible--v1"/>}
+                </button>
                 </InputRight>
             </InputGroup>
             <br />
@@ -65,7 +68,12 @@ export default function LoginForm() {
             </div>
             <br />
             <p> <a href="/signin">Non sei iscritto? iscriviti subito</a> </p>
-            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", marginTop: "1rem", }}>{message}</p>}
+            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                {result.success 
+                ? <img width="22" height="22" src="https://img.icons8.com/color/48/checkmark--v1.png" alt="checkmark--v1"/>
+                : <img width="22" height="22" src="https://img.icons8.com/color/48/delete-sign--v1.png" alt="delete-sign--v1"/>
+                } 
+                {message}</p>}
         </form>
        
     );

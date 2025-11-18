@@ -42,13 +42,13 @@
 }
 
 .btn.sidebutton {
-  background: #21657a;
+  background: #3d3f66;/*#21657a;*/
   /*border: 2px solid #1e5d70;*/
   color: white;
 }
 
 .btn.sidebutton:hover {
-  background: #1e5d70;
+  background: #313353;/*#1e5d70;*/
   color: white;
 }
 

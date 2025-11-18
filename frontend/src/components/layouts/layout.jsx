@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router"; 
 import styles from "@/styles/layout.module.css"; 
 import Button from "@/components/ui/button";
@@ -13,10 +13,20 @@ import Sidebar from "@/components/ui/sidebar";
  * @returns {JSX.Element}
  * */
 export default function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState("close");
   const router = useRouter();
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  //const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const toggleSidebar = () => {
+    let next = sidebarOpen === "open" ? "close" : "open";
+    setSidebarOpen(next);
+    localStorage.setItem("sidebar", next);
+  }
+
+  useEffect(() => {
+    setSidebarOpen(localStorage.getItem("sidebar"))
+  }, []); 
 
   const { isAuthenticated, user, logout} = useAuth();
 
@@ -25,7 +35,10 @@ export default function Layout({ children }) {
 
       {/* Header */}
       <header className={styles.header}>
-        <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="sidebutton"/>
+        <Button label={sidebarOpen === "open"
+          ? <img height="30px" weight="30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVR4nO2UQQ6DIBBFuURJvf9J6qYptZuy8DivIWWjEf2D2HThX5E4/z9gBp079XcCemAAvMHjgRdwU4oDX0UFksNTbdJDAVyAdzaMQGeovW4CVAi14QqEveFrEFqFF5oYZ2t50iwnabNzAdC1CveHXdFSQy3vxBzuyt9sEGUUqYVY5pwaCPC0NJHpEAQFcK/8XQ/Jq3pO/U4fS5Xnx68CVG0AAAAASUVORK5CYII=" alt="delete-sign"></img>
+          : <img height="30px" weight="30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABMklEQVR4nO3aPU4DMRCGYUuhgZJU/JSEkiwtERULXCDcASQirsE1wm0ioeQWQEcq6HjRaFPR0PBJY/Z7pOnH47VXHrsUMzMzMzMzs18B18ATsACek8Rik9NlUQIegC/yitxmqsEPgU/yixx3FQVoqUerKEBDPU4UBdgCluQXm+LgzwsQgFHyIsTgj4oSMADGwBS4SRLTTU6amTczM+sAh8Ad8JgsIqeDogRcAWvyWsuOxMAO8EZ+L8C2ogDn1GOiKMCEepyplsArfV0CITYY4J28IreLogTsA7cJfns/I3Lakw7ezMz6jq493iRsijbypihwDKzIK1r2I+XMr8hvKfkSgFPqMVYUoKXnl6PDSq7HPyTX4yEeH1TwQOK+KNEdiecJn8jM5UdhMzMzMzMzK//DN5h1UDYzOEebAAAAAElFTkSuQmCC" alt="menu"></img>
+        } click={toggleSidebar} variant="sidebutton"/>
       
         <div>
           {isAuthenticated ? (
