@@ -9,7 +9,7 @@ export default function Sidebar({ sidebarOpen }) {
           <a href="/chartBar">Barra</a>
           <a href="/chartPie">Torta</a>
           <a href="/">Altro</a>
-          <a style={{ background: "green" }} href="/">Torna alla Home</a>
+          <a className={styles.linkhome} href="/">Torna alla Home</a>
         </nav>
       </div>
     </aside>

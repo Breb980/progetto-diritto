@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
 import Layout from "@/components/layouts/layout";
 import Chart from "@/components/ui/chart";
-
+import styles from "@/styles/chart.module.css";
 
 //GETTER from backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
@@ -41,9 +41,11 @@ export default function ChartPage({ type = "bar", title = "Statistiche voti" }) 
     return (
       <Layout>
           <div style={{ padding: "20px" }}>
-              <h1>{title}</h1>
+              <div className={styles.headchart}>
+                <h1>{title}</h1>
+                <Button label="Aggiorna grafico" click={fetchData} variant="primary" />
+              </div>
               <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" typology={type} />
-              <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
           </div>
       </Layout>
     );

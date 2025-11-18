@@ -9,7 +9,7 @@
 /* Header */
 .header {
   height: 60px;
-  background-color: white;
+  background-color: #5fa4b9;
   display: flex;
   justify-content: space-between; /* spaziatura nel menu, TODO */
   align-items: center;
@@ -28,7 +28,7 @@
 /* Sidebar */
 .sidebar {
   width: 250px;
-  background-color: #2d3748;
+  background-color: #1e5d70;/*#2a4174;*/
   color: white;
   text-align: center;
   padding: 16px;
@@ -73,6 +73,22 @@
 }
 
 .sidebar a:active {
+  background: darkred;
+  color: white;
+}
+
+/* specify for home link */
+.sidebar a.linkhome {
+  background: #24d07a;
+  color: black;
+}
+
+.sidebar a.linkhome:hover {
+  background: #1eb56a;
+  color: black;
+}
+
+.sidebar a.linkhome:active {
   background: darkred;
   color: white;
 }

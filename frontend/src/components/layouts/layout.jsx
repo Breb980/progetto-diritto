@@ -25,7 +25,7 @@ export default function Layout({ children }) {
 
       {/* Header */}
       <header className={styles.header}>
-        <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="secondary"/>
+        <Button label={sidebarOpen ? "Hide Sidebar" : "Show Sidebar"} click={toggleSidebar} variant="sidebutton"/>
       
         <div>
           {isAuthenticated ? (

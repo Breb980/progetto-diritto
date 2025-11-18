@@ -1,0 +1,10 @@
+.headchart {
+    display: flex; 
+    gap: 10%;
+    margin-bottom: 100px;
+}
+
+/* for delete the expansion of button */
+.headchart h1 {
+    margin: 0px; 
+}
