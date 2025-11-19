@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS votes (
 
 INSERT INTO votes (choice)
 VALUES 
-('it'),
-('it'),
-('it'),
-('de'),
-('de'),
-('fr');
+('A'),
+('A'),
+('A'),
+('B'),
+('B'),
+('C');
 
 -- Test output
 SELECT 'init.sql eseguito correttamente' AS message;

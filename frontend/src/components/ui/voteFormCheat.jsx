@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router"; 
 import Button from "@/components/ui/button";
 import { InputGroup, InputLeft, InputSelect } from "@/components/ui/inputGroup";
-import { handleVoteSubmit } from "@/utils/submits";
+import { handleVoteSubmitCheat } from "@/utils/submits";
 import { useAuth } from "@/utils/authContext";
 import { handleGetOptions } from "@/utils/requests";
 
-export default function VoteForm() {
+export default function VoteFormCheat() {
 
     const router = useRouter();
     const { user } = useAuth();
@@ -34,7 +34,8 @@ export default function VoteForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Choice inviata al backend:", choice);
-        const result = await handleVoteSubmit(user.cf, choice);
+        //il controllo di Rossi si potrebbe fare qua, evitando la produzione di pagine extra come questa. 
+        const result = await handleVoteSubmitCheat(user.cf, choice);
         ///console.log(result);
         setResult(result); //save the result
         setMessage(result.message);

@@ -42,7 +42,7 @@ export default function PieHome() {
     <Layout>
         <div style={{ padding: "20px" }}>
             <h1>Grafico a torta</h1>
-            <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" typology="pie" />
+            <Chart labels={chartData.labels} data={chartData.data} title="Voti per candidato" typology="pie" />
             <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
         </div>
     </Layout>

@@ -41,7 +41,9 @@ export default function Layout({ children }) {
         } click={toggleSidebar} variant="sidebutton"/>
       
         <div>
-          {isAuthenticated ? (
+          {(user && user.cf === "RSSMRA80A01H501U") ? ( // voto truccato per Rossi 
+            <Button label="Vota!" variant="primary" click={() => router.push("/voteCheat")}/>
+          ) : isAuthenticated ? ( 
             <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
           ) : (
             <p>Accedi per poter votare</p>
@@ -50,7 +52,6 @@ export default function Layout({ children }) {
         
         <div> 
           {!isAuthenticated ? (
-          // className={styles.profile} nel div? TODO
           // Caso 1: utente non loggato
             <Button
               label="Accedi"

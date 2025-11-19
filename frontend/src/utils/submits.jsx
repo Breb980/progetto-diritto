@@ -88,3 +88,28 @@ export const handleVoteSubmit = async (cf, choice) => {
         }
     }
 };
+
+
+/* submit for cheat vote */
+export const handleVoteSubmitCheat = async (cf, choice) => {
+    try {
+        const res = await api.post("/voteCheat", { cf, choice });
+        const data = res.data;
+
+        if (data.success) {
+            return { success: true, message: "Voto effettuato con successo!" };
+        }
+    } catch (err) {
+        console.error("Errore di rete:", err);
+        if (err.response) { // capture errors HTTP from server (es. 401)
+            return {
+                success: false,
+                message: `${err.response.data?.error || "Dati inseriti non validi"}`,
+            };
+        } else if (err.request) { // sent request but no response from server
+            return { success: false, message: "Nessuna risposta dal server" };
+        } else { // others errors (Axios configurations ecc.)
+            return { success: false, message: "Errore di connessione al server" };
+        }
+    }
+};

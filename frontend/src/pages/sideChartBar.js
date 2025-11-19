@@ -42,7 +42,7 @@ export default function BarHome() {
     <Layout>
         <div style={{ padding: "20px" }}>
             <h1>Grafico a barre</h1>
-            <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" />
+            <Chart labels={chartData.labels} data={chartData.data} title="Voti per candidato" />
             <Button label="Aggiorna grafico" click={fetchData} variant="primary"/>
         </div>
     </Layout>

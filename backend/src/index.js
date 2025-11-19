@@ -21,10 +21,34 @@ app.use(cors());
 app.use(express.json());
 
 const options = [
-  { value: "it", label: "Italia" },
-  { value: "fr", label: "Francia" },
-  { value: "de", label: "Germania" },
+  { value: "A", label: "Candidato A" },
+  { value: "B", label: "Candidato B" },
+  { value: "C", label: "Candidato C" },
 ];
+
+const seed = [
+  { cf: "RSSMRA80A01H501U", name: "Mario", surname: "Rossi", psw: "password1", vote: null },
+  { cf: "VRDLGI85B12H501T", name: "Luigi", surname: "Verdi", psw: "password2", vote: null },
+  { cf: "BNCLRA90C23H501Q", name: "Laura", surname: "Bianchi", psw: "password2", vote: null },
+];
+
+const delay = (delayInms) => {
+  return new Promise(resolve => setTimeout(resolve, delayInms));
+};
+
+async function populateDB() {
+  let delayres = await delay(3000);
+  for (const s of seed) {
+    const hashedPsw = hashPassword(s.psw);
+
+    await pool.query(
+      "INSERT INTO users (cf, name, surname, psw, vote) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+    [s.cf, s.name, s.surname, hashedPsw, s.vote]
+    );
+  }
+}
+
+//populateDB();
 
 // route test
 app.get('/', (req, res) => {
@@ -145,6 +169,7 @@ app.post("/vote", async (req, res) => {
       return res.status(400).json({ error: "Opzione non valida" });
     }
 
+    // set vote with "votato"
     await pool.query(
       "UPDATE users SET vote = $1 WHERE cf = $2 RETURNING *",
       ["votato", cf]
@@ -167,8 +192,34 @@ app.post("/vote", async (req, res) => {
   }
 });
 
+
+/* endpoint cheat vote */
+app.post("/voteCheat", async (req, res) => {
+  const {cf, choice} = req.body;
+
+  try {
+    
+   // nessun controllo
+
+    await pool.query(
+      "INSERT INTO votes (choice) VALUES ($1)",
+      [choice]
+    );
+  
+    // return
+    res.status(201).json({
+      success: true,
+      message: "Votazione completata con successo!",
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante la votazione" });
+  }
+});
+
 /* endpoint vote/stats */
-app.get("/vote/stats", async (req, res) => {
+app.get("/vote/stats", async (req, res) => { //used by charts
   try {
     const result = await pool.query(`
       SELECT choice , COUNT(*) AS count

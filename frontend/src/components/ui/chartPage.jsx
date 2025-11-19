@@ -45,7 +45,7 @@ export default function ChartPage({ type = "bar", title = "Statistiche voti" }) 
                 <h1>{title}</h1>
                 <Button label="Aggiorna grafico" click={fetchData} variant="primary" />
               </div>
-              <Chart labels={chartData.labels} data={chartData.data} title="Voti per paese" typology={type} />
+              <Chart labels={chartData.labels} data={chartData.data} title="Voti per candidato" typology={type} />
           </div>
       </Layout>
     );

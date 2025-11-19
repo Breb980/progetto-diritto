@@ -77,7 +77,7 @@ export default function LoginForm() {
                 <Button label="Iscriviti" variant="outline" type="submit"/>
                 <Button label="Annulla" click={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
             </div>
-            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red" }}>
+            {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 {result.success 
                 ? <img width="22" height="22" src="https://img.icons8.com/color/48/checkmark--v1.png" alt="checkmark--v1"/>
                 : <img width="22" height="22" src="https://img.icons8.com/color/48/delete-sign--v1.png" alt="delete-sign--v1"/>
