@@ -1,6 +1,6 @@
 import Button from "@/components/ui/button";
 import Layout from "@/components/layouts/layout";
-
+import TextPage from "@/components/layouts/textPage"
 
 /** Homepage
  *  
@@ -10,12 +10,6 @@ export default function Home() {
 
   // if the try went well, RETURN the users list 
   return (
-    <Layout>
-      <div style={{ padding: "20px" }}>
-        <h1>Benvenuto nella piattaforma di voto</h1>
-        <Button label="Annulla" variant="secondary" size="small"/>
-        <Button label="Profilo" variant="outline"/>
-      </div>
-    </Layout>
+    <TextPage api_url="/text/home" title="Benvenuto nella piattaforma di voto" subtitle="Modi per Truccare il voto"/>
   );
 }

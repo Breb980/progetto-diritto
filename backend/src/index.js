@@ -4,6 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 const { hashPassword, verifyPassword } = require('../src/auth/auth.js');
 
+const { hometext, options, seed } = require("../src/data.js");
+
 const app = express();
 
 //use the port defined in Dockerfile ENV
@@ -20,27 +22,23 @@ app.use(cors());
 // app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
-// dovrebbe essere nel db, ma anche in una struttura dati a parte (una risorsa che fa da validante)
-const options = [
-  { value: "A", label: "Candidato A" },
-  { value: "B", label: "Candidato B" },
-  { value: "C", label: "Candidato C" },
-];
-
-const seed = [
-  { cf: "RSSMRA80A01H501U", name: "Mario", surname: "Rossi", psw: "password1", vote: null },
-  { cf: "VRDLGI85B12H501T", name: "Luigi", surname: "Verdi", psw: "password2", vote: null },
-  { cf: "BNCLRA90C23H501Q", name: "Laura", surname: "Bianchi", psw: "password2", vote: null },
-];
 
 const delay = (delayInms) => {
   return new Promise(resolve => setTimeout(resolve, delayInms));
 };
 
 async function populateDB() {
-  let delayres = await delay(3000);
+  await delay(3000);
   for (const s of seed) {
     const hashedPsw = hashPassword(s.psw);
+
+    
+    const check = await pool.query("SELECT * FROM users WHERE cf = $1", [s.cf]);
+
+    if (check.rows.length > 0) { 
+      console.log("Utente già registrato!");
+      continue;
+    }
 
     await pool.query(
       "INSERT INTO users (cf, name, surname, psw, vote) VALUES ($1, $2, $3, $4, $5) RETURNING *",
@@ -49,7 +47,7 @@ async function populateDB() {
   }
 }
 
-//populateDB();
+populateDB();
 
 // route test
 app.get('/', (req, res) => {
@@ -298,6 +296,36 @@ app.get("/options", async (req, res) => {
     res.status(201).json({
       success: true,
       options: options,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
+  }
+});
+
+app.get("/text/candidates", async (req, res) => {
+  try {
+   
+    // return
+    res.status(201).json({
+      success: true,
+      options: options,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
+  }
+});
+
+app.get("/text/home", async (req, res) => {
+  try {
+   
+    // return
+    res.status(201).json({
+      success: true,
+      options: hometext,
     });
 
   } catch (err) {

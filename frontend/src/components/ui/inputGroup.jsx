@@ -41,7 +41,7 @@ export function InputSelect({options = [], multiple = false, placeholder = "-- S
       {...props}
     >
       {/* Placeholder for single selection, disable: not selectable, hidden: placeholder hidden*/}
-      {!multiple && <option value="" disable hidden>{placeholder}</option>}
+      {!multiple && <option value="" disabled hidden>{placeholder}</option>}
 
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>

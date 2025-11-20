@@ -19,9 +19,12 @@ You can build and run simultaneously:
 ## stop webapp
 - _docker compose down_
 
+## stop webapp and clean docker images 
+- _docker compose down -v_
+
 ## Architetture
 - **Frontend:** [Next.js](https://nextjs.org/) (React) → user interface
-- **Backend:** [Express.js](https://expressjs.com/) (Node.js) → API REST
+- **Backend:** [Express.js](https://expressjs.com/) (Node.js with CommonJS) → API REST
 - **Database:** [PostgreSQL](https://www.postgresql.org/) → data persistence
 - **Containerization:** [Docker](https://www.docker.com/) → service isolation
 

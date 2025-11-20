@@ -24,8 +24,6 @@ export default function ChartPage({ type = "bar", title = "Statistiche voti" }) 
 
         const labels = res.data.results.map(r => r.choice);
         const data = res.data.results.map(r => r.count);
-        ///console.log("labels", labels);
-        ///console.log("data", data);
         setChartData({ labels, data });
       } catch (err) {
         console.error("Errore caricamento dati:", err);
