@@ -1,6 +1,6 @@
 /* The voting page */
 import React from "react";
-import VoteForm from "@/components/ui/voteForm";
+import VoteForm from "@/components/forms/voteForm";
 
 /**
  * create voting page wraping LoginForm

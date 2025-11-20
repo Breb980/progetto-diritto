@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import styles from "@/styles/layout.module.css"; 
 import Button from "@/components/ui/button";
 import { useAuth } from "@/utils/authContext";
-import Sidebar from "@/components/ui/sidebar";
+import Sidebar from "@/components/layouts/sidebar";
 
 /**
  * Provider that create the layout structure
@@ -15,8 +15,6 @@ import Sidebar from "@/components/ui/sidebar";
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState("close");
   const router = useRouter();
-
-  //const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const toggleSidebar = () => {
     let next = sidebarOpen === "open" ? "close" : "open";

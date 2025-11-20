@@ -20,6 +20,7 @@ app.use(cors());
 // app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
+// dovrebbe essere nel db, ma anche in una struttura dati a parte (una risorsa che fa da validante)
 const options = [
   { value: "A", label: "Candidato A" },
   { value: "B", label: "Candidato B" },
@@ -231,14 +232,58 @@ app.get("/vote/stats", async (req, res) => { //used by charts
     // convert "options" in a map
     const labelMap = Object.fromEntries(options.map(opt => [opt.value, opt.label]));
 
-    // formatta i dati sostituendo choice con label
+    // formatta i dati in una lista sostituendo choice con label
     const formatted = result.rows.map(row => ({
       choice: labelMap[row.choice] || row.choice,
       count: Number(row.count)
     }));
 
+    const sortedFormatted = formatted.sort((a, b) => a.choice.localeCompare(b.choice));
 
-    res.json({ success: true, results: formatted });
+    res.json({ success: true, results: sortedFormatted });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Errore server" });
+  }
+});
+
+/* endpoint vote/statsCheat */
+app.get("/vote/statsCheat", async (req, res) => { //used by charts
+  try {
+    const result = await pool.query(`
+      SELECT choice , COUNT(*) AS count
+      FROM votes
+      WHERE choice IS NOT NULL
+      GROUP BY choice
+    `);
+
+    // { A: 'Candidato A', B: 'Candidato B', C: 'Candidato C' }
+    // convert "options" into a map
+    const labelMap = Object.fromEntries(options.map(opt => [opt.value, opt.label]));
+    
+    /*
+    [
+      {choice: 'candidato A', count: 2},
+      ...
+    ]
+    */
+   // formatta i dati in una lista sostituendo choice con label
+    const formatted = result.rows.map(row => ({
+      choice: labelMap[row.choice] || row.choice,
+      count: Number(row.count)
+    }));
+
+    const updatedFormatted = formatted.map(row => {
+      if (row.choice === 'Candidato A') {
+        // truccato il conteggio del candidato A
+        return { ...row, count: Math.floor(row.count*1.5) }; 
+      }
+      return row;
+    });
+
+    const sortedFormatted = updatedFormatted.sort((a, b) => a.choice.localeCompare(b.choice));
+
+    res.json({ success: true, results: sortedFormatted });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: "Errore server" });

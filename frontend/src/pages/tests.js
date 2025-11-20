@@ -7,7 +7,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
 // used for test
   export const getUsers = async () => {
     try {
-      const res = await axios.get(`${API_URL}/users`);
+      const res = await axios.get(`${API_URL}/users`); //API_URL + "/vote/stats"
       return res.data;
     } catch (err) {
       console.error("Error fetching users:", err);

@@ -1,5 +1,3 @@
-
-
 import Button from "@/components/ui/button";
 import Layout from "@/components/layouts/layout";
 

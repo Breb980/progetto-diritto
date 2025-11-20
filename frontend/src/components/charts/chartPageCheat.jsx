@@ -1,14 +1,11 @@
-import axios from "axios";
+import api from "@/utils/api";
 //useState: memorize local state in the page
 import { useState, useEffect } from "react";
 
 import Button from "@/components/ui/button";
 import Layout from "@/components/layouts/layout";
-import Chart from "@/components/ui/chart";
+import Chart from "@/components/charts/chart";
 import styles from "@/styles/chart.module.css";
-
-//GETTER from backend
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:5000";
 
 /**
  * generic page for visualize any type of chart
@@ -21,12 +18,10 @@ export default function ChartPage({ type = "bar", title = "Statistiche voti" }) 
   
   const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL + "/vote/stats"); 
+        const res = await api.get("/vote/statsCheat"); 
 
         const labels = res.data.results.map(r => r.choice);
         const data = res.data.results.map(r => r.count);
-        ///console.log("labels", labels);
-        ///console.log("data", data);
         setChartData({ labels, data });
       } catch (err) {
         console.error("Errore caricamento dati:", err);

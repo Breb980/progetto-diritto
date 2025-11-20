@@ -1,6 +1,6 @@
 /* The cheat voting page */
 import React from "react";
-import VoteFormCheat from "@/components/ui/voteFormCheat";
+import VoteFormCheat from "@/components/forms/voteFormCheat";
 
 /**
  * create voting page wraping LoginForm

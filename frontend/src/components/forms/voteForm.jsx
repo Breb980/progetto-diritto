@@ -68,6 +68,7 @@ export default function VoteForm() {
                 <Button label="Annulla" click={(e) => {e.preventDefault(); router.push("/");}} variant="secondary"/>
             </div>
             <br />
+            <p> <a href="/candidates">Non sai chi votare? informati</a> </p>
             {message && <p style={{ marginTop: "1rem", color: result.success ? "green" : "red", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 {result.success 
                 ? <img width="22" height="22" src="https://img.icons8.com/color/48/checkmark--v1.png" alt="checkmark--v1"/>
