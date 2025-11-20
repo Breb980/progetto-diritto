@@ -22,7 +22,6 @@ export default function LoginForm() {
     /* getter for result*/
     const [result, setResult] = useState(null);
 
-    //const { isAuthenticated, setIsAuthenticated } = useAuth();
     const { login } = useAuth();
     
     const handleSubmit = async (e) => {

@@ -1,4 +1,4 @@
-/* All submits are defined here ❌ ✅*/
+/* All submits are defined here */
 
 import api from "@/utils/api";
 

@@ -39,7 +39,7 @@ export default function Layout({ children }) {
         } click={toggleSidebar} variant="sidebutton"/>
       
         <div>
-          {(user && user.cf === "RSSMRA80A01H501U") ? ( // voto truccato per Rossi 
+          {(user && user.cf === "MSTGTN90A01H501A") ? ( // voto truccato per Rossi 
             <Button label="Vota!" variant="primary" click={() => router.push("/voteCheat")}/>
           ) : isAuthenticated ? ( 
             <Button label="Vota" variant="primary" click={() => router.push("/vote")}/>
