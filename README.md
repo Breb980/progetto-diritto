@@ -28,6 +28,11 @@ You can build and run simultaneously:
 - **Database:** [PostgreSQL](https://www.postgresql.org/) → data persistence
 - **Containerization:** [Docker](https://www.docker.com/) → service isolation
 
+## Docker images
+ **Frontend:** node:18-alpine
+- **Backend:** node:18-alpine
+- **Database:** postgres:14
+
 ## Ports
 - **Frontend:** http://localhost:3000
 - **Backend:** http://localhost:5000

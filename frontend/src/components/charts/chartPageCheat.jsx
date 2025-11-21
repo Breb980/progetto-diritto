@@ -38,7 +38,7 @@ export default function ChartPage({ type = "bar", title = "Statistiche voti" }) 
           <div style={{ padding: "20px" }}>
               <div className={styles.headchart}>
                 <h1>{title}</h1>
-                <Button label="Aggiorna grafico" click={fetchData} variant="primary" />
+                <Button label="Aggiorna grafico" click={fetchData} variant="tertiary" />
               </div>
               <Chart labels={chartData.labels} data={chartData.data} title="Voti per candidato" typology={type} />
           </div>

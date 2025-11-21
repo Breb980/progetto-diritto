@@ -4,6 +4,10 @@ export default function Sidebar({ sidebarOpen }) {
   return (
     <aside className={`${styles.sidebar} ${sidebarOpen === "open" ? styles.open : styles.closed}`}>
       <div>
+        <nav>
+          <a className={styles.linkhome} href="/">Torna alla Home</a>
+        </nav>
+        <br />
         <h2>Grafici</h2>
         <nav>
           <a href="/chartBar">Barra</a>
@@ -14,7 +18,7 @@ export default function Sidebar({ sidebarOpen }) {
         <h2>Informazioni</h2>
         <nav>
           <a href="/candidates">Candidati</a>
-          <a className={styles.linkhome} href="/">Torna alla Home</a>
+          <a href="/informations">Documentazione</a>
         </nav>
       </div>
     </aside>

@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const { hashPassword, verifyPassword } = require('../src/auth/auth.js');
 
-const { hometext, options, seed } = require("../src/data.js");
+const { hometext, options, seed, informations } = require("../src/data.js");
 
 const app = express();
 
@@ -326,6 +326,21 @@ app.get("/text/home", async (req, res) => {
     res.status(201).json({
       success: true,
       options: hometext,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
+  }
+});
+
+app.get("/text/informations", async (req, res) => {
+  try {
+   
+    // return
+    res.status(201).json({
+      success: true,
+      options: informations,
     });
 
   } catch (err) {

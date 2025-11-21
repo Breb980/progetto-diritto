@@ -1,4 +1,3 @@
-// dovrebbe essere nel db, ma anche in una struttura dati a parte (una risorsa che fa da validante)
 
 const hometext = [
   { label: "Modificare la base dati", 
@@ -13,6 +12,7 @@ const hometext = [
         In questo progetto c'è il grafico "cheat" che non attinge alla fonte sicura.` },
 ];
 
+// dovrebbe essere nel db, ma anche in una struttura dati a parte (una risorsa che fa da validante)
 const options = [
   { value: "A", label: "Candidato A", text: "Merita di vincere, dovreste votarlo tutti." },
   { value: "B", label: "Candidato B", text: "Non è nulla di che, ma ha un bel pappagallo." },
@@ -27,4 +27,32 @@ const seed = [
   { cf: "FRZGVN90A01H501F", name: "Giovanni", surname: "Frizzigoni", psw: "password5", vote: null },
 ];
 
-module.exports = { hometext, options, seed };
+const informations = [
+   {label: "Generalità", 
+    text:`La webapp offre la possibilità agli utenti di votare elettronicamente, per farlo l'utente deve registrarsi e accedere.
+    Il voto è singolo ed è possibile consultare gli esiti dei voti in tempo reale (cosa che normalmente non avviene).`
+  },
+  {label: "Architettura", 
+    text:`Il progetto usa docker per garantire portabilità, nello specifico è diviso in tre servizi: frontend, backend e db (il database).
+      Nel file compose.yml vengono definiti i servizi docker.
+      Essendo un protopipo, il sistema non offre misure di sicurezza e strutture dati realistiche. 
+      Un riassunto sulle specifiche è disponibile nel file Readme del progetto.`
+  },
+  {label: "Backend", 
+    text:`L'immagine usata è node:18-alpine (non è considerata sicura, ma è leggera e buona per la fase di sviluppo o prototipi).
+    La porta 5000 è stata aperta per testarne il funzionamento, nel file 'backend/src/index.js' è possibile consultare tutti gli endpoint disponibili.
+    Questo componente si interfaccia tra database e frontend.`
+  },
+  {label: "Frontend", 
+    text:`L'immagine usata è node:18-alpine.
+    La webapp viene hostata sulla porta 3000, le pagine sono disponibili in  'frontend/src/pages'.
+    Questo componente rappresenta l'interfaccia navigabile dall'utente.`
+  },
+   {label: "Db", 
+    text:`L'immagine usata è postgres:14, possiede un volume per garantire persistenza dei dati.
+    Il database è interrogabile dal backend dalla porta 5432, nel file 'db/init.sql' è gestista l'inizializzazione del database.
+    Questo componente funge da struttura dati.`
+  },
+];
+
+module.exports = { hometext, options, seed, informations };
