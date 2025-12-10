@@ -2,7 +2,8 @@ const { Pool } = require('pg');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { hashPassword, verifyPassword } = require('../src/auth/auth.js');
+const { hashPassword, verifyPassword, encrypt, decrypt } = require('../src/auth/auth.js');
+const { Block, Blockchain } = require("../src/blockchain/blockchain.js");
 
 const { hometext, options, seed, informations } = require("../src/data.js");
 
@@ -27,6 +28,10 @@ const delay = (delayInms) => {
   return new Promise(resolve => setTimeout(resolve, delayInms));
 };
 
+const VoteChain = new Blockchain();
+
+
+// init the database
 async function populateDB() {
   await delay(3000);
   for (const s of seed) {
@@ -178,6 +183,23 @@ app.post("/vote", async (req, res) => {
       "INSERT INTO votes (choice) VALUES ($1)",
       [choice]
     );
+
+    // TODO: da truccare la choice
+    const encryptedVote = encrypt(choice);
+    
+    // manage blockchain
+    VoteChain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote }));
+
+    // TODO: mettere la VoteChain nel db
+
+    console.log(VoteChain.chain); 
+
+    const votes = VoteChain.chain
+      .slice(1)
+      .map(block => decrypt(block.data.vote));
+
+    console.log(votes);
+
   
     // return
     res.status(201).json({

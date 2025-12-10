@@ -34,7 +34,7 @@ export default function VoteFormCheat() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Choice inviata al backend:", choice);
-        //il controllo di Rossi si potrebbe fare qua, evitando la produzione di pagine extra come questa. 
+        //il controllo di Mastrazzi si potrebbe fare qua, evitando la produzione di pagine extra come questa. 
         const result = await handleVoteSubmitCheat(user.cf, choice);
         ///console.log(result);
         setResult(result); //save the result
