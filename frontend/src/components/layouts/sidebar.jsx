@@ -13,6 +13,7 @@ export default function Sidebar({ sidebarOpen }) {
           <a href="/chartBar">Barra</a>
           <a href="/chartPie">Torta</a>
           <a href="/chartCheat">Barra Truccata</a>
+          <a href="/chartChain">Barra Blockchain</a>
         </nav>
         <br />
         <h2>Informazioni</h2>

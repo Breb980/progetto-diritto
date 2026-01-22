@@ -10,6 +10,11 @@ CREATE TABLE IF NOT EXISTS votes (
   choice VARCHAR(50) DEFAULT NULL
 );
 
+CREATE TABLE IF NOT EXISTS blockchain (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  chain JSONB NOT NULL
+);
+
 --INSERT INTO users (name) VALUES ('Mario'), ('Paolo'), ('Luisa');
 --INSERT INTO users (cf, name, surname, psw, vote)
 --VALUES 

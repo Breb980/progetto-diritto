@@ -1,20 +1,18 @@
-const { Pool } = require('pg');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { hashPassword, verifyPassword, encrypt, decrypt } = require('../src/auth/auth.js');
+const { hashPassword, verifyPassword, encrypt, decrypt, verifySignature } = require('../src/auth/auth.js');
 const { Block, Blockchain } = require("../src/blockchain/blockchain.js");
 
-const { hometext, options, seed, informations } = require("../src/data.js");
+const { hometext, options, seed, informations, puclicKeys } = require("../src/data.js");
+
+const { Pool, pool, PORT } = require("./pool.js");
 
 const app = express();
 
-//use the port defined in Dockerfile ENV
-const PORT = process.env.PORT || 5000;
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
+const testRoutes = require('../src/routes/test.routes.js');
+const textRoutes = require('../src/routes/text.routes.js');
+const authRoutes = require('../src/routes/auth.routes.js');
 
 // middleware
 // allows all port origins, in real implementations, i need to have well-defined origins for safety
@@ -23,13 +21,20 @@ app.use(cors());
 // app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
+// routes
+app.use('/', testRoutes);
+app.use('/text', textRoutes);
+app.use('/', authRoutes);
 
 const delay = (delayInms) => {
   return new Promise(resolve => setTimeout(resolve, delayInms));
 };
 
-const VoteChain = new Blockchain();
+// ========================
+// Init fase
+// ========================
 
+const VoteChain = new Blockchain();
 
 // init the database
 async function populateDB() {
@@ -46,29 +51,23 @@ async function populateDB() {
     }
 
     await pool.query(
-      "INSERT INTO users (cf, name, surname, psw, vote) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO users (cf, name, surname, psw, vote) VALUES ($1, $2, $3, $4, $5)",
     [s.cf, s.name, s.surname, hashedPsw, s.vote]
     );
   }
+
+  // init blockchain in db
+  await pool.query(
+    "INSERT INTO blockchain (id, chain) VALUES (1, $1) ON CONFLICT (id) DO NOTHING",
+    [VoteChain]
+  );
 }
 
 populateDB();
 
-// route test
-app.get('/', (req, res) => {
-  res.send('Backend funzionante!');
-});
-
-// endpoint of test DB, TEST
-app.get("/test-db", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.send(`DB OK! Server time: ${result.rows[0].now}`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Database connection failed");
-  }
-});
+// ========================
+// Listen
+// ========================
 
 // listen on 0.0.0.0 to allow access from container
 app.listen(PORT, '0.0.0.0', () => {
@@ -76,76 +75,91 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 /* endpoint login */
-app.post("/login", async (req, res) => {
-  const {cf, psw} = req.body;
+// app.post("/login", async (req, res) => {
+//   const {cf, psw, publicKey} = req.body;
 
-  try {
-    const result = await pool.query(
-      "SELECT * FROM users WHERE cf = $1",
-      [cf]
-    );
-    if (result.rows.length > 0 && verifyPassword(psw, result.rows[0].psw)) {
-      res.status(200).json({ success: true , user: result.rows[0]});
-    } else {
-      res.status(401).json({ error: "Credenziali non valide" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server" });
-  }
-});
+//   try {
+//     const result = await pool.query(
+//       "SELECT * FROM users WHERE cf = $1",
+//       [cf]
+//     );
+//     if (result.rows.length > 0 && verifyPassword(psw, result.rows[0].psw)) {
+//       puclicKeys.set(cf, publicKey);
+//       res.status(200).json({ success: true , user: result.rows[0]});
+//     } else {
+//       res.status(401).json({ error: "Credenziali non valide" });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Errore server" });
+//   }
+// });
 
 
-/* endpoint signin */
-app.post("/signin", async (req, res) => {
-  const {cf, name, surname, psw} = req.body;
+// /* endpoint signin */
+// app.post("/signin", async (req, res) => {
+//   const {cf, name, surname, psw, publicKey} = req.body;
 
-  try {
-    //check if users exists
-    const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
+//   try {
+//     //check if users exists
+//     const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
 
-    // several checks
-    if (check.rows.length > 0) {
-      return res.status(400).json({ error: "Utente già registrato" });
-    }
-    if (cf.length == 0 || name.length == 0  || surname.length == 0  || psw.length == 0 ) {
-      return res.status(400).json({ error: "Tutti i campi devono essere riempiti" });
-    }
+//     // several checks
+//     if (check.rows.length > 0) {
+//       return res.status(400).json({ error: "Utente già registrato" });
+//     }
+//     if (cf.length == 0 || name.length == 0  || surname.length == 0  || psw.length == 0 ) {
+//       return res.status(400).json({ error: "Tutti i campi devono essere riempiti" });
+//     }
 
-    if (cf.length != 16) {
-      return res.status(400).json({ error: "Codice fiscale non valido" });
-    }
+//     if (cf.length != 16) {
+//       return res.status(400).json({ error: "Codice fiscale non valido" });
+//     }
 
-    if (psw.length < 6 && psw.length > 0) {
-      return res.status(400).json({ error: "Password troppo debole" });
-    }
+//     if (psw.length < 6 && psw.length > 0) {
+//       return res.status(400).json({ error: "Password troppo debole" });
+//     }
     
-    // hash the psw
-    const hashedPsw = hashPassword(psw);
+//     // hash the psw
+//     const hashedPsw = hashPassword(psw);
 
-    // insert the new user
-    const result = await pool.query(
-      "INSERT INTO users (cf, name, surname, psw) VALUES ($1, $2, $3, $4) RETURNING *",
-      [cf, name, surname, hashedPsw]
-    );
+//     // insert the new user
+//     const result = await pool.query(
+//       "INSERT INTO users (cf, name, surname, psw) VALUES ($1, $2, $3, $4) RETURNING *",
+//       [cf, name, surname, hashedPsw]
+//     );
 
-    // return
-    res.status(201).json({
-      success: true,
-      message: "Registrazione completata con successo!",
-      user: result.rows[0],
-    });
+//     puclicKeys.set(cf, publicKey);
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante la registrazione" });
-  }
-});
+//     // return
+//     res.status(201).json({
+//       success: true,
+//       message: "Registrazione completata con successo!",
+//       user: result.rows[0],
+//     });
+
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Errore server durante la registrazione" });
+//   }
+// });
+
+// app.post("/logout", async (req, res) => {
+//   const { cf } = req.body;
+
+//   try {
+//     puclicKeys.delete(cf);
+//     res.status(200).json({ success: true });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Errore server" });
+//   }
+// });
 
 /* endpoint vote */
-app.post("/vote", async (req, res) => {
-  const {cf, choice} = req.body;
-
+app.post("/vote",  async (req, res) => {
+  const {cf, choice, signature} = req.body;
+  //console.log("firma:", signature);
   try {
     // check if users exists
     const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
@@ -173,6 +187,18 @@ app.post("/vote", async (req, res) => {
       return res.status(400).json({ error: "Opzione non valida" });
     }
 
+    const pubKey = puclicKeys.get(cf);
+    if (pubKey === undefined) {
+       return res.status(400).json({ error: "Chiave pubblica non trovata" });
+    }
+    //console.log("pubblica:", pubKey);
+    //console.log("firma:", signature);
+
+    // verifica della firma
+    if (!verifySignature(pubKey, choice, signature)) {
+      return res.status(400).json({ error: "Firma errata" });
+    }
+
     // set vote with "votato"
     await pool.query(
       "UPDATE users SET vote = $1 WHERE cf = $2 RETURNING *",
@@ -188,17 +214,28 @@ app.post("/vote", async (req, res) => {
     const encryptedVote = encrypt(choice);
     
     // manage blockchain
-    VoteChain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote }));
+    //VoteChain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote })); now we use db's chain
 
-    // TODO: mettere la VoteChain nel db
+    const ris = await pool.query("SELECT chain FROM blockchain");
 
-    console.log(VoteChain.chain); 
+    const chain = ris.rows[0].chain;
 
-    const votes = VoteChain.chain
-      .slice(1)
-      .map(block => decrypt(block.data.vote));
+    const blockchain = Blockchain.fromJSON(chain);
 
-    console.log(votes);
+    blockchain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote }));
+
+    console.log("inserisco in blockchain:", blockchain);
+    // mette la VoteChain nel db
+    // await pool.query(
+    //   "INSERT INTO blockchain (chain) VALUES ($1)",
+    //   [JSON.stringify(VoteChain.chain)]
+    // );
+
+    // rimette chain nel db
+    await pool.query(
+      "UPDATE blockchain SET chain = $1 WHERE id = 1",
+      [JSON.stringify(blockchain)]
+    );
 
   
     // return
@@ -248,7 +285,6 @@ app.get("/vote/stats", async (req, res) => { //used by charts
       WHERE choice IS NOT NULL
       GROUP BY choice
     `);
-
     // convert "options" in a map
     const labelMap = Object.fromEntries(options.map(opt => [opt.value, opt.label]));
 
@@ -257,6 +293,49 @@ app.get("/vote/stats", async (req, res) => { //used by charts
       choice: labelMap[row.choice] || row.choice,
       count: Number(row.count)
     }));
+
+    const sortedFormatted = formatted.sort((a, b) => a.choice.localeCompare(b.choice));
+
+    //console.log("formatted: ", sortedFormatted)
+
+    res.json({ success: true, results: sortedFormatted });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Errore server" });
+  }
+});
+
+/* endpoint vote/chain */
+// TODO: da rifare
+app.get("/vote/chain", async (req, res) => { //used by charts, extractiong by blockchain
+  try {
+
+    // recuperare la blockchain dal db
+    const ris = await pool.query("SELECT chain FROM blockchain");
+
+    const blockchain = Blockchain.fromJSON(ris.rows[0].chain);
+
+    console.log("chain:", blockchain);
+
+    //console.log(VoteChain.chain); 
+    //console.log(chain);
+
+    const votes = blockchain.chain //VoteChain.chain
+      .slice(1)
+      .map(block => decrypt(block.data.vote));
+
+    console.log(votes);
+
+    // counts: { 'A': 2, 'B': 1 }
+    const counts = votes.reduce((acc, vote) => {
+      acc[vote] = (acc[vote] || 0) + 1;
+      return acc;
+    }, {});
+
+    // formatted: [ { choice: 'A', count: 2 }, { choice: 'B', count: 1 } ]
+    const formatted = Object.entries(counts).map(([choice, count]) => ({ choice, count }));
+
+    //console.log("formatted: ", formatted)
 
     const sortedFormatted = formatted.sort((a, b) => a.choice.localeCompare(b.choice));
 
@@ -304,100 +383,6 @@ app.get("/vote/statsCheat", async (req, res) => { //used by charts
     const sortedFormatted = updatedFormatted.sort((a, b) => a.choice.localeCompare(b.choice));
 
     res.json({ success: true, results: sortedFormatted });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: "Errore server" });
-  }
-});
-
-/* endpoint options */
-app.get("/options", async (req, res) => {
-  try {
-
-    // return
-    res.status(201).json({
-      success: true,
-      options: options,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
-  }
-});
-
-app.get("/text/candidates", async (req, res) => {
-  try {
-   
-    // return
-    res.status(201).json({
-      success: true,
-      options: options,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
-  }
-});
-
-app.get("/text/home", async (req, res) => {
-  try {
-   
-    // return
-    res.status(201).json({
-      success: true,
-      options: hometext,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
-  }
-});
-
-app.get("/text/informations", async (req, res) => {
-  try {
-   
-    // return
-    res.status(201).json({
-      success: true,
-      options: informations,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore server durante l'estrazione delle opzioni" });
-  }
-});
-
-
-//----------- TESTS -----------
-
-// endpoint users
-app.get("/users", async (req, res) => {
-  try {
-    //const result = await pool.query("SELECT id, name FROM users");
-    const result = await pool.query("SELECT * FROM users");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB error:", err);
-    res.status(500).json({ error: "Database connection failed" });
-  }
-});
-
-/* endpoint vote/stats */
-app.get("/vote/stat", async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT choice , COUNT(*) AS count
-      FROM votes
-      WHERE choice IS NOT NULL
-      GROUP BY choice
-    `);
-    
-    console.log("test", result.rows);
-    res.json(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: "Errore server" });

@@ -39,6 +39,19 @@ class Blockchain {
 
         /// this.difficulty += Date.now() - parseInt(this.getLastBlock().timestamp) < this.blockTime ? 1 : -1;
     }
+
+    static fromJSON(json) {
+        const blockchain = new Blockchain();
+
+        blockchain.chain = json.chain.map(b => {
+            const block = new Block(b.timestamp, b.data);
+            block.hash = b.hash;
+            block.prevHash = b.prevHash;
+            return Object.freeze(block);
+        });
+
+        return blockchain;
+    }
 }
 
 const crypto = require("crypto"), SHA256 = message => crypto.createHash("sha256").update(message).digest("hex");

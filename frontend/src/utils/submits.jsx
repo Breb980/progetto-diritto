@@ -9,9 +9,9 @@ import api from "@/utils/api";
  * @param {string} psw - User password
  * @returns {Object} - {Boolean: success, Object: user data only success is true, string: message}
  * */
-export const handleLoginSubmit = async (cf, psw) => {
+export const handleLoginSubmit = async (cf, psw, publicKey) => {
     try {
-        const res = await api.post("/login", { cf, psw });
+        const res = await api.post("/login", { cf, psw, publicKey});
         const data = res.data;
 
         if (data.success) {
@@ -42,9 +42,9 @@ export const handleLoginSubmit = async (cf, psw) => {
  * @param {string} psw - User password
  * @returns {Object} - {Boolean: success, Object: user data only success is true, string: message}
  * */
-export const handleSigninSubmit = async (cf, name, surname, psw) => {
+export const handleSigninSubmit = async (cf, name, surname, psw, publicKey) => {
     try {
-        const res = await api.post("/signin", { cf, name, surname, psw });
+        const res = await api.post("/signin", { cf, name, surname, psw, publicKey });
         const data = res.data;
 
         if (data.success) {
@@ -66,9 +66,9 @@ export const handleSigninSubmit = async (cf, name, surname, psw) => {
 };
 
 /* submit for vote */
-export const handleVoteSubmit = async (cf, choice) => {
+export const handleVoteSubmit = async (cf, choice, signature) => {
     try {
-        const res = await api.post("/vote", { cf, choice });
+        const res = await api.post("/vote", { cf, choice, signature });
         const data = res.data;
 
         if (data.success) {

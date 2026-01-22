@@ -5,6 +5,7 @@ import Button from "@/components/ui/button";
 import { InputGroup, InputLeft, InputRight, Input } from "@/components/ui/inputGroup";
 import { handleSigninSubmit } from "@/utils/submits";
 import { useAuth } from "@/utils/authContext";
+import { generateEd25519KeyPair } from "@/utils/signature";
 
 
 export default function LoginForm() {
@@ -26,14 +27,15 @@ export default function LoginForm() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await handleSigninSubmit(cf, name, surname, psw);
+        const keys = generateEd25519KeyPair();
+        const result = await handleSigninSubmit(cf, name, surname, psw, keys.publicKey);
         console.log(result);
         setResult(result); //save the result
         setMessage(result.message);
 
         //if the auth its ok
         if (result.success) {
-            login(result.user);
+            login(result.user, keys.privateKey);
             // rederict to home
             setTimeout(() => { router.push("/"); }, 1000);
         }

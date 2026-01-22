@@ -11,7 +11,7 @@ import api from "@/utils/api";
  * */
 export const handleGetOptions = async () => {
      try {
-        const res = await api.get("/options");
+        const res = await api.get("/text/candidates");
         const data = res.data;
 
         return {success: true, options: data.options};

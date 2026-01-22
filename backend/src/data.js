@@ -55,4 +55,7 @@ const informations = [
   },
 ];
 
-module.exports = { hometext, options, seed, informations };
+const puclicKeys = new Map();
+
+
+module.exports = { hometext, options, seed, informations, puclicKeys };

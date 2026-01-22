@@ -50,6 +50,12 @@ function decrypt(hash) {
   return decrypted.toString();
 }
 
+function verifySignature(publicKey, data, signatureBase64) {
+  const message = Buffer.from(data);
+  const signature = Buffer.from(signatureBase64, 'base64');
+  return crypto.verify(null, message, publicKey, signature); // true/false
+}
+
 // aggiungere firma digitale per autenticità
 // ogni utente ha una chiave privata per firmare il proprio blocco
 // ogni utente ha una chiave pubblica usata dal backend per verificare la firma
@@ -59,6 +65,7 @@ module.exports = {
   hashPassword,
   verifyPassword,
   encrypt,
-  decrypt
+  decrypt,
+  verifySignature
 };
  

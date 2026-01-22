@@ -5,11 +5,12 @@ import { InputGroup, InputLeft, InputSelect } from "@/components/ui/inputGroup";
 import { handleVoteSubmit } from "@/utils/submits";
 import { useAuth } from "@/utils/authContext";
 import { handleGetOptions } from "@/utils/requests";
+import { signData } from "@/utils/signature";
 
 export default function VoteForm() {
 
     const router = useRouter();
-    const { user } = useAuth();
+    const { user, pkey } = useAuth();
 
     const [choice, setChoice] = useState("");
     const [message, setMessage] = useState("");
@@ -34,7 +35,18 @@ export default function VoteForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Choice inviata al backend:", choice);
-        const result = await handleVoteSubmit(user.cf, choice);
+        console.log("Chiave privata nel form:", pkey);
+        //const choiceSignature = signData(pkey, choice)
+        const res = await fetch('/api/signature', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: choice, privateKey: pkey }),
+         });
+        const choiceSignature = await res.json();
+        console.log("sign:", choiceSignature);
+        const result = await handleVoteSubmit(user.cf, choice, choiceSignature);
         ///console.log(result);
         setResult(result); //save the result
         setMessage(result.message);
