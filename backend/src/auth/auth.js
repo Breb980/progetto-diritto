@@ -56,11 +56,6 @@ function verifySignature(publicKey, data, signatureBase64) {
   return crypto.verify(null, message, publicKey, signature); // true/false
 }
 
-// aggiungere firma digitale per autenticità
-// ogni utente ha una chiave privata per firmare il proprio blocco
-// ogni utente ha una chiave pubblica usata dal backend per verificare la firma
-// in questo modo il backend non può inventarsi i voti perché non può firmare i voti
-// può truccare i voti? sostituire la choice prima di firmare
 module.exports = {
   hashPassword,
   verifyPassword,

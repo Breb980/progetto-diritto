@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { hashPassword, verifyPassword, encrypt, decrypt, verifySignature } = require('../src/auth/auth.js');
+const { hashPassword, encrypt, decrypt, verifySignature } = require('../src/auth/auth.js');
 const { Block, Blockchain } = require("../src/blockchain/blockchain.js");
 
 const { hometext, options, seed, informations, puclicKeys } = require("../src/data.js");
@@ -74,88 +74,6 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend running on port ${PORT}`);
 });
 
-/* endpoint login */
-// app.post("/login", async (req, res) => {
-//   const {cf, psw, publicKey} = req.body;
-
-//   try {
-//     const result = await pool.query(
-//       "SELECT * FROM users WHERE cf = $1",
-//       [cf]
-//     );
-//     if (result.rows.length > 0 && verifyPassword(psw, result.rows[0].psw)) {
-//       puclicKeys.set(cf, publicKey);
-//       res.status(200).json({ success: true , user: result.rows[0]});
-//     } else {
-//       res.status(401).json({ error: "Credenziali non valide" });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Errore server" });
-//   }
-// });
-
-
-// /* endpoint signin */
-// app.post("/signin", async (req, res) => {
-//   const {cf, name, surname, psw, publicKey} = req.body;
-
-//   try {
-//     //check if users exists
-//     const check = await pool.query("SELECT * FROM users WHERE cf = $1", [cf]);
-
-//     // several checks
-//     if (check.rows.length > 0) {
-//       return res.status(400).json({ error: "Utente già registrato" });
-//     }
-//     if (cf.length == 0 || name.length == 0  || surname.length == 0  || psw.length == 0 ) {
-//       return res.status(400).json({ error: "Tutti i campi devono essere riempiti" });
-//     }
-
-//     if (cf.length != 16) {
-//       return res.status(400).json({ error: "Codice fiscale non valido" });
-//     }
-
-//     if (psw.length < 6 && psw.length > 0) {
-//       return res.status(400).json({ error: "Password troppo debole" });
-//     }
-    
-//     // hash the psw
-//     const hashedPsw = hashPassword(psw);
-
-//     // insert the new user
-//     const result = await pool.query(
-//       "INSERT INTO users (cf, name, surname, psw) VALUES ($1, $2, $3, $4) RETURNING *",
-//       [cf, name, surname, hashedPsw]
-//     );
-
-//     puclicKeys.set(cf, publicKey);
-
-//     // return
-//     res.status(201).json({
-//       success: true,
-//       message: "Registrazione completata con successo!",
-//       user: result.rows[0],
-//     });
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Errore server durante la registrazione" });
-//   }
-// });
-
-// app.post("/logout", async (req, res) => {
-//   const { cf } = req.body;
-
-//   try {
-//     puclicKeys.delete(cf);
-//     res.status(200).json({ success: true });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Errore server" });
-//   }
-// });
-
 /* endpoint vote */
 app.post("/vote",  async (req, res) => {
   const {cf, choice, signature} = req.body;
@@ -180,7 +98,7 @@ app.post("/vote",  async (req, res) => {
     // extracts from options only the value
     const validValues = options.map(opt => opt.value);
 
-    ////console.log("Choice ricevuta:", choice);
+    ///console.log("Choice ricevuta:", choice);
 
     // if choice isn't legit, throw error
     if (!validValues.includes(choice)) {
@@ -211,11 +129,8 @@ app.post("/vote",  async (req, res) => {
     );
 
     // TODO: da truccare la choice
-    const encryptedVote = encrypt(choice);
+    const encryptedVote = encrypt("A");
     
-    // manage blockchain
-    //VoteChain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote })); now we use db's chain
-
     const ris = await pool.query("SELECT chain FROM blockchain");
 
     const chain = ris.rows[0].chain;
@@ -224,12 +139,7 @@ app.post("/vote",  async (req, res) => {
 
     blockchain.addBlock(new Block(Date.now().toString(), {  vote: encryptedVote }));
 
-    console.log("inserisco in blockchain:", blockchain);
-    // mette la VoteChain nel db
-    // await pool.query(
-    //   "INSERT INTO blockchain (chain) VALUES ($1)",
-    //   [JSON.stringify(VoteChain.chain)]
-    // );
+    //console.log("inserisco in blockchain:", blockchain);
 
     // rimette chain nel db
     await pool.query(
@@ -306,7 +216,6 @@ app.get("/vote/stats", async (req, res) => { //used by charts
 });
 
 /* endpoint vote/chain */
-// TODO: da rifare
 app.get("/vote/chain", async (req, res) => { //used by charts, extractiong by blockchain
   try {
 

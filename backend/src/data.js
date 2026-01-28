@@ -2,8 +2,9 @@
 const hometext = [
   { label: "Modificare la base dati", 
     text: `Nel caso venga usato un database è possibile aggiungere voti a piacimento senza che nessuno se ne accorga. Il risultato può essere ottenuto avendo a disposizione un accesso speciale alla piattaforma, via query non autorizzata oppure da persone che hanno l'accesso per manutenzione. 
-        In caso venga implementata una struttura dati più realistica per questo progetto, come ad esempio una blockchain, il problema persiste: aggiungere blocchi in modo non autorizzato diventa possibile se il sistema permette l'uso di molteplici token anonimi (indispensabili per firmare il blocco) allora l'utente malevolo potrà votare più volte in modo lecito senza essere rintracciabile.
-        Nel caso specifico, nel file init.sql sono stati aggiunti dei voti alla creazione del database giusto per non essere imparziale.`},
+        Per questo progetto è stata implementata una struttura dati alternativa più realistica, ossia una blockchain, ma il problema persiste: aggiungere blocchi in modo non autorizzato diventa possibile se il sistema permette l'uso di molteplici token anonimi (indispensabili per firmare il blocco) allora l'utente malevolo potrà votare più volte in modo lecito senza essere rintracciabile.
+        Nel caso specifico, nel file init.sql sono stati aggiunti dei voti alla creazione del database giusto per non essere imparziale.
+        Come alternativa è stata implementa una blockchain che rende impossibile al sistema inventare nuovi voti a causa della impossibilità di firmare il blocco.`},
   { label: "Permettere molteplici voti", 
     text: `Un sistema truccato potrebbe permettere a certe persone di votare più volte, ci potrebbero essere svariati modi per farlo. In questo progetto, nel file layout.jsx viene modificato il pulsante di voto del signor Rossi. Ora premendo il pulsante verrà reidirizzato verso una pagina di voto diversa ma appartentemente uguale all'altra. La pagina voteCheat permette a chi vi naviga di votare tutte le volte che si vuole.
         Un'altro modo per permettere questo senza creare pagine extra (e quindi essere più difficile da notare) consiste nel effetuare il controllo dell'utente privileggiato (Rossi) durante la fase del submit del voto (nel voteForm.jsx oppure in submit.jsx senza dover duplicare codice) che può essere manipolato come si vuole. Nel caso specifico il voto viene reindirizzato su un endpoint http diverso.` },
@@ -30,7 +31,7 @@ const seed = [
 const informations = [
    {label: "Generalità", 
     text:`La webapp offre la possibilità agli utenti di votare elettronicamente, per farlo l'utente deve registrarsi e accedere.
-    Il voto è singolo ed è possibile consultare gli esiti dei voti in tempo reale (cosa che normalmente non avviene).`
+    Il voto è singolo ed è possibile consultare gli esiti dei voti in tempo reale (vìola il principio di lealtà di un buon sistema di voto).`
   },
   {label: "Architettura", 
     text:`Il progetto usa docker per garantire portabilità, nello specifico è diviso in tre servizi: frontend, backend e db (il database).
@@ -51,7 +52,7 @@ const informations = [
    {label: "Db", 
     text:`L'immagine usata è postgres:14, possiede un volume per garantire persistenza dei dati.
     Il database è interrogabile dal backend dalla porta 5432, nel file 'db/init.sql' è gestista l'inizializzazione del database.
-    Questo componente funge da struttura dati.`
+    Questo componente funge da struttura dati, inoltre nel db viene memorizzata una blockchain.`
   },
 ];
 

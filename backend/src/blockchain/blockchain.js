@@ -1,9 +1,10 @@
+/* The Class Blockchain rapresents the blockchain and 
+a Class Block for build the blocks of blockchain */
+
 class Blockchain {
     constructor() {
         // create the genesis block (the first block without data)
         this.chain = [new Block(Date.now().toString())];
-        /// this.difficulty = 1;
-        /// this.blockTime = 30000;
     }
 
     getLastBlock() {
@@ -25,19 +26,15 @@ class Blockchain {
         return true;
     }
 
-    // TODO da mettere altrove
     addBlock(block) {
         // prevHash will be the hash of the old latest block
         block.prevHash = this.getLastBlock().hash;
         // now prevHash has a value, we must reset the block's hash
         block.hash = block.getHash();
 
-        /// block.mine(this.difficulty); // for mining
-
         // Object.freeze ensures immutability in our code
         this.chain.push(Object.freeze(block));
 
-        /// this.difficulty += Date.now() - parseInt(this.getLastBlock().timestamp) < this.blockTime ? 1 : -1;
     }
 
     static fromJSON(json) {
@@ -63,12 +60,11 @@ class Block {
         this.data = data;
         this.hash = this.getHash();
         this.prevHash = ""; // previous block's hash
-        /// this.nonce = 0;
     }
 
     // ensure the immutability
     getHash() {
-        return SHA256(this.prevHash + this.timestamp + JSON.stringify(this.data)); //+ this.nonce
+        return SHA256(this.prevHash + this.timestamp + JSON.stringify(this.data));
     }
 
     mine(difficulty) {
@@ -76,7 +72,6 @@ class Block {
         // the string 0...000 with length of <difficulty>.
         while (!this.hash.startsWith(Array(difficulty + 1).join("0"))) {
             // We increases our nonce so that we can get a whole different hash.
-            /// this.nonce++;
             // Update our new hash with the new nonce value.
             this.hash = this.getHash();
         }

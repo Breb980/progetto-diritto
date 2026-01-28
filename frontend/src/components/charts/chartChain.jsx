@@ -1,3 +1,7 @@
+/* TODO: si potrebbe aggiungere un parametro a ChartPage per rimuovere del tutto questa pagina
+e quindi modificare chartPage.jsx
+*/
+
 import api from "@/utils/api";
 //useState: memorize local state in the page
 import { useState, useEffect } from "react";

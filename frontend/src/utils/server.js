@@ -1,3 +1,4 @@
+// functions for generate keys and sign
 
 import { generateKeyPairSync, sign } from 'crypto';
 

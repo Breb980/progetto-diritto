@@ -89,5 +89,5 @@ export default function VoteForm() {
                 {message}</p>}
         </form>
        
-    ); //<p> <a href="/candidati">Non sai chi votare? informati</a> </p>
+    );
 }

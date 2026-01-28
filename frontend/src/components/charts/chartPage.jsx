@@ -7,8 +7,6 @@ import Layout from "@/components/layouts/layout";
 import Chart from "@/components/charts/chart";
 import styles from "@/styles/chart.module.css";
 
-
-
 /**
  * generic page for visualize any type of chart
  * @param {string} type - chart type (es. "bar", "pie", "line")
