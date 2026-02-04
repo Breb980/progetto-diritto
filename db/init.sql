@@ -15,13 +15,6 @@ CREATE TABLE IF NOT EXISTS blockchain (
   chain JSONB NOT NULL
 );
 
---INSERT INTO users (name) VALUES ('Mario'), ('Paolo'), ('Luisa');
---INSERT INTO users (cf, name, surname, psw, vote)
---VALUES 
---('RSSMRA80A01H501U', 'Mario', 'Rossi', 'password1', NULL),
---('VRDLGI85B12H501T', 'Luigi', 'Verdi', 'password2', NULL),
---('BNCLRA90C23H501Q', 'Laura', 'Bianchi', 'password3', NULL);
-
 INSERT INTO votes (choice)
 VALUES 
 ('A'),
@@ -33,8 +26,3 @@ VALUES
 
 -- Test output
 SELECT 'init.sql eseguito correttamente' AS message;
-
---UPDATE users
---SET vote = 'Candidato A'
---WHERE cf = 'RSSMRA80A01H501U';
---VALUES ('MSTGTN90A01H501A', 'Giantino', 'Mastrazzi', 'giantino123');

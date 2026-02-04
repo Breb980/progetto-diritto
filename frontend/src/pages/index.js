@@ -47,6 +47,35 @@ export default function Home() {
         Nel menù è presente la voce "Barra Truccata" che manomette i voti solo dopo averli estratti dalla struttura dati, 
         il conteggio viene modificato a vantaggio del Candidato A.
       </p>
+      <p>Inoltre è possibile testare anche con altri utenti non privileggiati:</p>
+      <Button label="Accedi come Mario Rossi" variant="primary" 
+        click={async () => {
+          const res = await fetch('/api/keys', { method: 'POST' });
+          const { publicKey, privateKey } = await res.json();
+          //console.log(publicKey)
+          await login({ cf: "RSSMRA80A01H501U", psw: "password1", name: "Mario", surname: "Rossi" }, privateKey);
+          await handleLoginSubmit("RSSMRA80A01H501U", "password1", publicKey);
+        }}/>
+        <p>
+        <Button label="Accedi come Luigi Verdi" variant="primary" 
+        click={async () => {
+          const res = await fetch('/api/keys', { method: 'POST' });
+          const { publicKey, privateKey } = await res.json();
+          //console.log(publicKey)
+          await login({ cf: "VRDLGI85B12H501T", psw: "password2", name: "Luigi", surname: "Verdi" }, privateKey);
+          await handleLoginSubmit("VRDLGI85B12H501T", "password2", publicKey);
+        }}/>
+        </p>
+        <p>
+        <Button label="Accedi come Laura Bianchi" variant="primary" 
+        click={async () => {
+          const res = await fetch('/api/keys', { method: 'POST' });
+          const { publicKey, privateKey } = await res.json();
+          //console.log(publicKey)
+          await login({ cf: "BNCLRA90C23H501Q", psw: "password3", name: "Laura", surname: "Bianchi" }, privateKey);
+          await handleLoginSubmit("BNCLRA90C23H501Q", "password3", publicKey);
+        }}/>
+        </p>
       </div>
     </TextPage>
   );
