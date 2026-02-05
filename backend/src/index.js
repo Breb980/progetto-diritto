@@ -297,3 +297,24 @@ app.get("/vote/statsCheat", async (req, res) => { //used by charts
     res.status(500).json({ success: false, error: "Errore server" });
   }
 });
+
+app.post("/clean-db", async (req, res) => {
+  try {
+    await pool.query(`
+      TRUNCATE TABLE users, votes, blockchain
+      RESTART IDENTITY CASCADE;
+    `);
+
+    await pool.query(`
+      INSERT INTO votes (choice) 
+      VALUES ('A'), ('A'), ('A'), ('B'), ('B'), ('C');
+    `);
+  
+    populateDB();
+
+   res.json({ success: true, results: "Database svutato corretamente"});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Errore inserimento voti" });
+  }
+});

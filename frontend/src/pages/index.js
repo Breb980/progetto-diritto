@@ -2,6 +2,7 @@ import TextPage from "@/components/layouts/textPage"
 import Button from "@/components/ui/button";
 import { useAuth } from "@/utils/authContext";
 import styles from "@/styles/layout.module.css";
+import api from "@/utils/api";
 
 // non dovrei farlo qua, serve per la demo
 import { handleLoginSubmit } from "@/utils/submits";
@@ -18,7 +19,14 @@ export default function Home() {
   // if the try went well, RETURN the users list 
 
   //const keys = generateEd25519KeyPair();
-  
+  const fetchData = async () => {
+      try {
+        const res = await api.post("/clean-db"); 
+        if (!res.data.success) console.error("reset fallito");
+      } catch (err) {
+        console.error("Errore nel raggiungere il databse", err);
+      }
+  };
 
   return ( 
     <TextPage api_url="/text/home" title="Benvenuto nella piattaforma di voto" subtitle="Strategie per Truccare il voto">
@@ -76,6 +84,13 @@ export default function Home() {
           await handleLoginSubmit("BNCLRA90C23H501Q", "password3", publicKey);
         }}/>
         </p>
+        <p>
+          Nel caso si volessero fare più test è possibile resettare il database.
+          Dopo aver pulito il database è necessario disconnettersi per ottenere una nuova
+          chiave di sessione.
+        </p>
+        <Button label="Pulisci database" click={fetchData} variant="tertiary"/>
+        
       </div>
     </TextPage>
   );
