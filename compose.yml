@@ -5,8 +5,6 @@ services:
       - "5000:5000" # <porta_host>:<porta_container>
     env_file:
      - ./backend/.env
-    depends_on:
-      - db
 
   frontend:
     build: ./frontend
@@ -16,18 +14,3 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:5000
     depends_on:
       - backend
-
-  db:
-    image: postgres:14
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: vote_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-volumes: 
-  db-data:
