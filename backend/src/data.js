@@ -10,7 +10,8 @@ const hometext = [
         Un'altro modo per permettere questo senza creare pagine extra (e quindi essere più difficile da notare) consiste nel effetuare il controllo dell'utente privileggiato (Rossi) durante la fase del submit del voto (nel voteForm.jsx oppure in submit.jsx senza dover duplicare codice) che può essere manipolato come si vuole. Nel caso specifico il voto viene reindirizzato su un endpoint http diverso.` },
   { label: "Alterare il conteggio dei voti dopo averli estratti", 
     text: `Senza controlli troppo rigidi, i voti estratti dalla struttura dati potrebbero essere modificati in fase di conteggio, ad esempio raddoppiando i voti per un candidato e dimezzarli per un'altro. Ovviamente la manipolazione deve essere fatta con cautela per non insospettire i cittadini.
-        In questo progetto c'è il grafico "cheat" che non attinge alla fonte sicura.` },
+        In questo progetto c'è il grafico "cheat" che non attinge alla fonte sicura.
+        Invece la "Barra Blockchain" mostra gli esiti di una struttura nuova che modifica i voti dopo l'estrazione, in particolare conteggia sempre il Candidato A.` },
 ];
 
 // dovrebbe essere nel db, ma anche in una struttura dati a parte (una risorsa che fa da validante)
